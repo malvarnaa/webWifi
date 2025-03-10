@@ -110,12 +110,9 @@
                                             </button>
                                         </form>
                                         
-                                        <form action="{{ route('pesanan.tolak', $item->id) }}" method="POST" style="display: inline;">
-                                            @csrf
-                                            <button type="submit" class="btn btn-danger rounded-pill">
-                                                <i class="bi bi-x-lg"></i> 
-                                            </button>
-                                        </form>                                        
+                                        <button type="button" class="btn btn-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#alasanTolakModal">
+                                            <i class="bi bi-x-lg"></i> 
+                                        </button>                                      
                                     </div>
                                 </div>
                             </div>
@@ -159,6 +156,29 @@
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 </div>
                             </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="alasanTolakModal" tabindex="-1" aria-labelledby="alasanTolakModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h1 class="modal-title fs-5" id="alasanTolakModalLabel">Kirim Alasan Penolakan Pesanan</h1>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form action="{{ route('pesanan.tolak', $item->id)}}" method="POST">
+                                    @csrf
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="">Kirim Pesan Alasan Penolakan Pesanan :</label>
+                                            <input type="text"  class="form-control" placeholder="Ketik Alasan Penolakan Pesanan">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                        <button type="submit" class="btn btn-primary">Tolak</button>
+                                    </div>
+                                </form>
+                              </div>
                             </div>
                         </div>
                         @endforeach
