@@ -63,16 +63,18 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
                                 <h5 class="mb-0">Daftar Paket Wifi</h5>
+                                @if(auth()->user()->role == 'admin')
                                 <button type="button" class="btn btn-primary btn-sm rounded-pill" style="background-color: #344767" data-bs-toggle="modal" data-bs-target="#tambahPaketModal">
                                     <i class="bi bi-plus"></i>
                                     <span class="d-none d-md-inline">Tambah</span>
-                                  </button>
+                                </button>
+                                @endif
                             </div>
                         </div>
                     </div>
                     @if ($paket->isEmpty())
                     <div class="alert alert-warning">
-                        Belum ada data Iduka yang tersedia.
+                        Belum paket yang tersedia.
                     </div>
                     @else
                         @foreach ($paket as $item)
@@ -96,7 +98,7 @@
                                             <button class="btn dropdown-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 ⋮
                                             </button>
-                                            <ul class="dropdown-menu dropdown-menu-end">
+                                            <ul class="dropdown-menu dropdown-menu-end" style="z-index: 1000;">
                                                 <li>
                                                     <a href="{{ route('paket.edit', $item->id) }}" class="dropdown-item text-warning">Edit</a>
                                                 </li>

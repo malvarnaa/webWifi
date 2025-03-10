@@ -30,6 +30,9 @@
   <link href="https://demos.creative-tim.com/argon-dashboard-pro/assets/css/nucleo-svg.css" rel="stylesheet" />
   <!-- Font Awesome Icons -->
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+  {{-- bootstrap cdn icon --}}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
   <!-- CSS Files -->
   <link id="pagestyle" href="{{ asset('tmp/assets/css/argon-dashboard.css?v=2.1.0')}}" rel="stylesheet" />
 </head>
@@ -56,11 +59,19 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="{{ asset('tmp/pages/tables.html')}}">
+          <a class="nav-link " href="{{ route('paket.index')}}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-calendar-grid-58 text-dark text-sm opacity-10"></i>
             </div>
-            <span class="nav-link-text ms-1">Tables</span>
+            <span class="nav-link-text ms-1">Paket</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{ route('prov.index')}}">
+            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-calendar-grid-58 text-dark text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Cakupan Wilayah</span>
           </a>
         </li>
         <li class="nav-item">
@@ -114,6 +125,14 @@
             <span class="nav-link-text ms-1">Sign Up</span>
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link " href="/logout">
+            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-collection text-dark text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Logout</span>
+          </a>
+        </li>
       </ul>
     </div>
     <div class="sidenav-footer mx-3 ">
@@ -142,19 +161,21 @@
           <h6 class="font-weight-bolder text-white mb-0">Dashboard</h6>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-          <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+          {{-- <div class="ms-md-auto pe-md-3 d-flex align-items-center">
             <div class="input-group">
-              <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" placeholder="Type here...">
-            </div>
-          </div>
-          <ul class="navbar-nav  justify-content-end">
+                <span class="input-group-text text-body">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                </span>
+                <input type="text" class="form-control" placeholder="Type here...">
+            </div> --}}
+        </div>
+        <ul class="navbar-nav justify-content-end">
             <li class="nav-item d-flex align-items-center">
-              <a href="javascript:;" class="nav-link text-white font-weight-bold px-0">
-                <i class="fa fa-user me-sm-1"></i>
-                <span class="d-sm-inline d-none">Sign In</span>
-              </a>
-            </li>
+              <h6 class="text-white font-weight-bold px-0">
+                  <i class="bi bi-person me-sm-1"></i>
+                  {{ auth()->user()->name }}
+              </h6>
+            </li>        
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-white p-0" id="iconNavbarSidenav">
                 <div class="sidenav-toggler-inner">

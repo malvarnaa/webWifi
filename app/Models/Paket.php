@@ -16,4 +16,9 @@ class Paket extends Model
         'deskripsi',
         'harga'
     ];
+
+    public function registers()
+    {
+        return $this->hasMany(Register::class, 'paket_id');
+    }
 }
