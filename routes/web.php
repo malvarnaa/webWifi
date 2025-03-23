@@ -26,12 +26,11 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/', function(){
-    return redirect('/login');
-});
-
-Route::get('/logout', function () {
     return redirect('/landing-page');
 });
+
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -88,10 +87,10 @@ Route::middleware(['auth', 'userAkses:pelanggan'])->group(function(){
 
 });
 
-Route::middleware(['auth', 'userAkses:calon'])->group(function(){
-    Route::get('/dashboard/pelanggan', [PelangganController::class, 'pelangganDashboard'])->name('pelanggan.dashboard');
+// Route::middleware(['auth', 'userAkses:calon'])->group(function(){
+//     Route::get('/dashboard/pelanggan', [PelangganController::class, 'pelangganDashboard'])->name('pelanggan.dashboard');
 
-});
+// });
 
 // Calon Pelanggan
 Route::get('/landing-page', [CalonPelangganController::class, 'index'])->name('landing.page');
@@ -99,5 +98,4 @@ Route::get('/register', [CalonPelangganController::class, 'register'])->name('ca
 Route::post('/register', [CalonPelangganController::class, 'registerStore'])->name('register.store');
 Route::get('/get-kabupaten/{prov_id}', [CalonPelangganController::class, 'getKabupaten']);
 Route::get('/get-kecamatan/{kab_id}', [CalonPelangganController::class, 'getKecamatan']);
-
 

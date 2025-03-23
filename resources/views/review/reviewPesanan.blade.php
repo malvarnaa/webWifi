@@ -169,15 +169,15 @@
                                     @csrf
                                     <div class="modal-body">
                                         <div class="mb-3">
-                                            <label for="">Kirim Pesan Alasan Penolakan Pesanan :</label>
-                                            <input type="text"  class="form-control" placeholder="Ketik Alasan Penolakan Pesanan">
+                                            <label>Kirim Pesan Alasan Penolakan Pesanan:</label>
+                                            <input type="text" name="alasan" class="form-control" placeholder="Ketik Alasan Penolakan">
                                         </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                                         <button type="submit" class="btn btn-primary">Tolak</button>
                                     </div>
-                                </form>
+                                </form>                                                                             
                               </div>
                             </div>
                         </div>

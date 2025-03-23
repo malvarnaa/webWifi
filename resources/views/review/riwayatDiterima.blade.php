@@ -11,7 +11,7 @@
                 </div>
                 <div class="card mb-3">
                     <div class="card-body">
-                        <div class="table-reponsive">
+                        <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
@@ -46,7 +46,9 @@
                                     @endif
                                 </tbody>
                             </table>
-                            <a href="{{ route('review.pesanan') }}" class="btn btn-secondary">Kembali</a>
+                            <div class="btn-back">
+                                <a href="{{ route('review.pesanan') }}" class="btn btn-secondary">Kembali</a>
+                            </div>
                         </div>
                     </div>
                 </div>

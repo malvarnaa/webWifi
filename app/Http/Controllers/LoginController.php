@@ -13,14 +13,14 @@ class LoginController extends Controller
 
     public function login(Request $request) {
         $request->validate([
-            'username' => 'required',
+            'email' => 'required',
             'password' => 'required'
         ], [
-            'username.required' => 'Username wajib diisi.',
+            'email.required' => 'Email wajib diisi.',
             'password.required' => 'Password wajib diisi.'
         ]);
 
-        $infologin = $request->only('username', 'password');
+        $infologin = $request->only('email', 'password');
 
         if(Auth::attempt($infologin)){
             $role = Auth::user()->role;
@@ -39,8 +39,14 @@ class LoginController extends Controller
         }
     }
     
-    public function logout(){
-        Auth::logout();
-        return redirect('/landing-page');
+    public function logout(Request $request)
+    {
+        Auth::logout(); // Logout pengguna
+    
+        $request->session()->invalidate(); // Hapus semua session yang tersimpan
+        $request->session()->regenerateToken(); // Regenerasi token CSRF untuk keamanan
+    
+        return redirect('/landing-page'); // Redirect ke halaman landing
     }
+    
 }

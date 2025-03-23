@@ -63,7 +63,7 @@
             <li class="nav-item d-flex align-items-center">
               <h6 class="text-white font-weight-bold px-0">
                   <i class="bi bi-person me-sm-1"></i>
-                  {{ auth()->user()->name }}
+                  {{-- {{ auth()->user()->name }} --}}
               </h6>
             </li>        
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
