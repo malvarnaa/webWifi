@@ -21,11 +21,26 @@
                                     </ul>
                                 </div>
                         
+                        
                                 @if(auth()->user()->role == 'admin')
-                                <button type="button" class="btn btn-primary btn-sm rounded-pill" style="background-color: #344767" data-bs-toggle="modal" data-bs-target="#tambahKabModal">
-                                    <i class="bi bi-plus"></i>
-                                    <span class="d-none d-md-inline">Tambah</span>
-                                </button>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle rounded-pill" style="background-color: #344767" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-plus"></i>
+                                        <span class="d-none d-md-inline">Tambah</span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#tambahKabModal">
+                                                Tambah Manual
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#importKabModal">
+                                                Import Excel
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                                 @endif
                             </div>
                         </div>                        
@@ -155,6 +170,33 @@
                         </div>
                         </div>
                         </form>
+                    </div>
+                </div>
+                 {{-- modal import excel --}}
+                <div class="modal fade" id="importKabModal" tabindex="-1" aria-labelledby="importKabModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="importKabModalLabel">Import Data Provinsi dari Excel</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+
+                            <form action="{{ route('kabupaten.import') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="file" class="form-label">Pilih File Excel (.xlsx, .xls, .csv)</label>
+                                        <input type="file" class="form-control" name="file" id="file" accept=".xlsx,.xls,.csv" required>
+                                        {{-- <div class="form-text">Pastikan format kolom sesuai dengan struktur yang dibutuhkan: <strong>nama_prov</strong></div> --}}
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                    <button type="submit" class="btn btn-success">Import</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
         </div>

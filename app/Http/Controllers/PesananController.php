@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+
 
 class PesananController extends Controller
 {
@@ -16,13 +18,11 @@ class PesananController extends Controller
         return view('review.riwayatDiterima', compact('pesanan'));
     }
     
-
     public function riwayatDitolak()
     {
         $pesanan = Register::where('status', 'ditolak')->get();
         return view('review.riwayatDitolak', compact('pesanan'));
     }
-    
 
      // Menerima pesanan
      public function terimaPesanan($id) {
@@ -126,5 +126,4 @@ class PesananController extends Controller
 
         return $response->json();
     }
-    
 }

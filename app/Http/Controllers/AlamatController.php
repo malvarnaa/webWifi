@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Desa;
 use App\Models\Kab;
 use App\Models\Kec;
 use App\Models\Prov;
+use App\Imports\ProvImport;
+use App\Imports\KabImport;
+use App\Imports\KecImport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 
 class AlamatController extends Controller
@@ -97,6 +102,22 @@ class AlamatController extends Controller
         return view('alamat.kec.kec', compact('kec', 'kab', 'prov'));
     }
 
+    public function getKabupaten($prov_id) //untuk mengambil kabupaten atau difilter
+    {
+        $kabupaten = Kab::where('prov_id', $prov_id)->get();
+        return response()->json($kabupaten);
+    }
+
+    public function getKecamatan($kab_id) {
+        $kecamatan = Kec::where('kab_id', $kab_id)->get();
+        return response()->json($kecamatan);
+    }
+
+    public function getDesa($kec_id){
+        $desa = Desa::where('kec_id', $kec_id)->get();
+        return response()->json($desa);
+    }
+
     public function kecStore(Request $request) {
         $request->validate([
             'nama_kec' => 'required|string|max:255',
@@ -132,4 +153,59 @@ class AlamatController extends Controller
         return redirect()->back()->with('success', 'Data berhasil dihapus!');
     }
     
+    public function desa(){
+        $desa = Desa::all();
+        $kec = Kec::all();
+        $kab = Kab::all();
+        $prov = Prov::all();
+        return view('alamat.desa.desa', compact('desa', 'kec', 'kab', 'prov'));
+    }
+
+    public function desaStore(Request $request) {
+        $request->validate([
+            'nama_desa' => 'required|string|max:225',
+            'kec_id' => 'required|exists:kecs,id'
+        ]);
+
+        Desa::create([
+            'nama_desa' => $request->nama_desa,
+            'kec_id' => $request->kec_id,
+        ]);
+
+        return redirect()->back()->with('success', 'Data berhasil ditembahkan!');
+    }
+
+    //import
+    public function importProvinsi(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
+
+        Excel::import(new ProvImport, $request->file('file'));
+
+        return back()->with('success', 'Data provinsi berhasil diimpor!');
+    }
+
+    public function importKabupaten(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
+
+        Excel::import(new KabImport, $request->file('file'));
+
+        return back()->with('success', 'Data kabupaten berhasil diimpor!');
+    }
+
+    public function importKecamatan(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
+
+        Excel::import(new KecImport, $request->file('file'));
+
+        return back()->with('success', 'Data kecamatan berhasil diimpor!');
+    }
 }

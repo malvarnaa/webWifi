@@ -14,10 +14,13 @@ class Register extends Model
         'nama_cust',
         'nomor_hp',
         'email',
+        'nik',
+        'foto_ktp',
         'paket_id',
         'prov_id',
         'kab_id',
         'kec_id',
+        'desa_id',
         'alamat_lengkap',
         'kebutuhan',
         'tanggal_pemasangan',
@@ -40,6 +43,11 @@ class Register extends Model
     {
         return $this->belongsTo(Kec::class, 'kec_id', 'id');
     }
+    public function desa()
+    {
+        return $this->belongsTo(Desa::class, 'desa_id');
+    }
+
 
     public function paket()
     {

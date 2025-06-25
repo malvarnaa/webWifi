@@ -36,6 +36,7 @@
 
 
 </style>
+
 <div class="card mb-3">
     <div class="card-body">
         <div class="judul">
@@ -51,12 +52,12 @@
             <h4><b>Data Diri</b></h4>
             @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
+                    {{ session('success') }} 
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-            @endif
+            @endif 
             @if ($errors->any())
-                <div class="alert alert-danger">
+                <div class="alert alert-danger">    
                     <ul>
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -71,7 +72,7 @@
             </div>    
         </div>
         <div class="form-data-diri">
-            <form action="{{ route('register.store')}}" method="POST">
+            <form action="{{ route('register.store')}}" method="POST" enctype="multipart/form-data">
             @csrf
                 <div class="mb-3">
                     <label for="">Nama Lengkap*</label>
@@ -88,6 +89,16 @@
                         <label for="">Email*</label>
                         <input type="email" class="form-control" name="email" placeholder="Masukkan Email kamu">
                     </div>
+                </div>
+                <div class="mb-3">
+                    <label for="">NIK*</label>
+                    <input type="number" class="form-control" name="nik" placeholder="Masukkan NIK kamu">
+                    <small class="text-muted">Pastikan NIK yang dimasukkan terdaftar resmi</small>
+                </div>
+                <div class="mb-3">
+                    <label for="formFile" class="form-label">Foto KTP*</label>
+                    <input class="form-control" type="file" id="formFile" name="foto_ktp">
+                    <small class="text-muted">Gunakan KTP asli dan jelas untuk verifikasi identitas. Tenang data kamu aman ko!</small>
                 </div>
                 <div class="label-paket">
                     <label for="">Pilih Paket Wifi*</label>
@@ -110,7 +121,7 @@
                     </div>       
                 </div>   
                 <div class="form-group">
-                    <label for="prov">Provinsi</label>
+                    <label for="prov">Provinsi*</label>
                     <select id="prov" name="prov_id" class="form-control">
                         <option value="">Pilih Provinsi</option>
                         @foreach($prov as $p)
@@ -120,21 +131,28 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="kab">Kabupaten</label>
+                    <label for="kab">Kabupaten*</label>
                     <select id="kab" name="kab_id" class="form-control">
                         <option value="">Pilih Kabupaten</option>
                     </select>
                 </div>
                 
                 <div class="form-group">
-                    <label for="kec">Kecamatan</label>
+                    <label for="kec">Kecamatan*</label>
                     <select id="kec" name="kec_id" class="form-control">
                         <option value="">Pilih Kecamatan</option>
                     </select>
                 </div>
+
+                <div class="form-group">
+                    <label for="desa">Kelurahan/Desa*</label>
+                    <select id="desa" name="desa_id" class="form-control">
+                        <option value="">Pilih Desa</option>
+                    </select>
+                </div>
                 
                 <div class="form-group">
-                    <label for="alamat">Alamat Lengkap</label>
+                    <label for="alamat">Alamat Lengkap*</label>
                     <textarea id="alamat" name="alamat_lengkap" class="form-control"></textarea>
                 </div>
                 <div class="form-group">
@@ -146,7 +164,7 @@
                     </div>
                 </div>                
                 <div class="form-group">
-                    <label for="kebutuhan">Kebutuhan</label>
+                    <label for="kebutuhan">Kebutuhan*</label>
                     <select id="kebutuhan" name="kebutuhan" class="form-control">
                         <option value="perumahan">Perumahan</option>
                         <option value="apartemen">Apartemen</option>
@@ -222,6 +240,27 @@
         }
     });
 
+    document.getElementById('kec').addEventListener('change', function () {
+        let kecId = this.value;
+        let desaSelect = document.getElementById('desa');
+
+        desaSelect.innerHTML = '<option value="">Pilih Desa</option>';
+
+        if (kecId) {
+            fetch(`/get-desa/${kecId}`)
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(desa => {
+                        let option = document.createElement('option');
+                        option.value = desa.id;
+                        option.textContent = desa.nama_desa;
+                        desaSelect.appendChild(option);
+                    });
+                });
+        }
+    });
+
+
     document.querySelectorAll('.paket-radio').forEach(radio => {
         radio.addEventListener('change', function () {
             let harga = this.getAttribute('data-harga'); 
@@ -267,6 +306,19 @@
             case error.UNKNOWN_ERROR:
                 alert("Terjadi kesalahan yang tidak diketahui.");
                 break;
+        }
+    }
+
+    function previewKTP(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById('previewKTPImage');
+
+        if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = 'block';
+        } else {
+        preview.src = '#';
+        preview.style.display = 'none';
         }
     }
 </script>

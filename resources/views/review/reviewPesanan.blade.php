@@ -8,9 +8,7 @@
         .card-hover:hover {
             transform: scale(1.03);
             background-color: #344767 !important;
-            /* Warna diperbaiki */
             color: white !important;
-            /* Agar teks berubah saat hover */
         }
 
         .card-hover:hover .btn-hover {
@@ -48,7 +46,7 @@
         .table td {
         word-wrap: break-word;
         white-space: normal;
-        max-width: 250px; /* Atur lebar maksimal kolom */
+        max-width: 250px; 
     }
 
 </style>
@@ -118,7 +116,6 @@
                             </div>
                         </div>
 
-                        {{-- detail pesanan --}}
                         <div class="modal fade" id="detailPaketModal{{ $item->id }}" tabindex="-1" aria-labelledby="detailPaketModalLabel{{ $item->id }}" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                             <div class="modal-content">
@@ -158,14 +155,9 @@
                             </div>
                             </div>
                         </div>
-                        <div class="modal fade" id="alasanTolakModal" tabindex="-1" aria-labelledby="alasanTolakModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="alasanTolakModal{{ $item->id }}" tabindex="-1" aria-labelledby="alasanTolakModalLabel{{ $item->id }}" aria-hidden="true">
                             <div class="modal-dialog">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h1 class="modal-title fs-5" id="alasanTolakModalLabel">Kirim Alasan Penolakan Pesanan</h1>
-                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <form action="{{ route('pesanan.tolak', $item->id)}}" method="POST">
+                                <form action="{{ route('pesanan.tolak', $item->id) }}" method="POST">
                                     @csrf
                                     <div class="modal-body">
                                         <div class="mb-3">

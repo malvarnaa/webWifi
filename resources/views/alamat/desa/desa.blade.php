@@ -17,11 +17,13 @@
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" href="{{ route('prov.index') }}">Provinsi</a></li>
                                         <li><a class="dropdown-item" href="{{ route('kab.index') }}">Kabupaten</a></li>
-                                        <li><a class="dropdown-item" href="{{ route('kec.index') }}">Kecamatan</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('kec.index')}}">Kecamatan</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('desa.index')}}">Kelurahan/Desa</a></li>
                                     </ul>
                                 </div>
                         
-                                 @if(auth()->user()->role == 'admin')
+                        
+                                @if(auth()->user()->role == 'admin')
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-primary btn-sm dropdown-toggle rounded-pill" style="background-color: #344767" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="bi bi-plus"></i>
@@ -29,12 +31,12 @@
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#tambahKecModal">
+                                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#tambahDesaModal">
                                                 Tambah Manual
                                             </a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#importKecModal">
+                                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#importDesaModal">
                                                 Import Excel
                                             </a>
                                         </li>
@@ -45,7 +47,7 @@
                         </div>                        
                     </div>
                 </div>
-                
+
                 <div class="card">
                     <div class="card-body">
                         @if(session('success'))
@@ -54,37 +56,40 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         @endif
-                        <h5>Kecamatan</h5>
+                        <h5>Kelurahan / Desa</h5>
+
                         <div class="table-responsive">
-                            <table class="table table-hover" style="text-align: center">
+                            <table class="table table-hover" style="text-align: center;font-size: 14px;">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>Provinsi</th>
-                                        <th>Kabupaten</th>
-                                        <th>Kecamatan</th>
-                                        <th>Aksi</th>
+                                        <td>#</td>
+                                        <td>Provinsi</td>
+                                        <td>Kabupaten</td>
+                                        <td>Kecamatan</td>
+                                        <td>Kelurahan/Desa</td>
+                                        <td>Aksi</td>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if ($kec->isEmpty())
+                                    @if ($desa->isEmpty())
                                         <tr>
                                             <td colspan="3">Tidak ada data yang perlu ditampilkan.</td>
                                         </tr>
                                     @else
-                                        @foreach ($kec as $item)
+                                        @foreach ($desa as $item)
                                         <tr>
                                             <td>{{$loop->iteration}}</td>
-                                            <td>{{ $item->kab->prov->nama_prov ?? '-' }}</td>
-                                            <td>{{ $item->kab->nama_kab }}</td>
-                                            <td>{{ $item->nama_kec}}</td>
+                                            <td>{{ $item->prov->nama_prov ?? '-' }}</td>
+                                            <td>{{ $item->kab->nama_kab ?? '-'}}</td>
+                                            <td>{{ $item->kec->nama_kec ?? '-'}}</td>
+                                            <td>{{ $item->nama_desa}}</td>
                                             <td>
                                                 <div class="d-flex gap-1 justify-content-center flex-nowrap">
                                                     <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                                        data-bs-target="#editKecModal{{ $item->id }}">
+                                                        data-bs-target="#editKabModal{{ $item->id }}">
                                                         <i class="bi bi-pen"></i>
                                                     </button>
-                                                    <form action="{{ route('kec.destroy', $item->id)}}" method="POST" class="delete-form d-inline">
+                                                    <form action="{{ route('kab.destroy', $item->id)}}" method="POST" class="delete-form d-inline">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="delete-btn btn btn-danger btn-sm">
@@ -95,31 +100,31 @@
                                             </td>
                                         </tr>
                                 
-                                        <div class="modal fade" id="editKecModal{{ $item->id }}" tabindex="-1" aria-labelledby="editKecModalLabel{{ $item->id }}" aria-hidden="true">
+                                        {{-- <div class="modal fade" id="editKabModal{{ $item->id }}" tabindex="-1" aria-labelledby="editKabModalLabel{{ $item->id }}" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="editKecModalLabel{{ $item->id }}">Form Edit Kecamatan</h1>
+                                                        <h1 class="modal-title fs-5" id="editKabModalLabel{{ $item->id }}">Form Edit Provinsi</h1>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form action="{{ route('kec.update', $item->id) }}" method="POST">
+                                                        <form action="{{ route('kab.update', $item->id) }}" method="POST">
                                                             @csrf
                                                             @method('PUT')
                                                             <div class="mb-3">
                                                                 <label class="form-label">Kabupaten</label>
-                                                                <select class="form-select" name="kab_id" required>
-                                                                    <option value="" disabled>Pilih Kabupaten</option>
-                                                                    @foreach ($kab as $k)
-                                                                        <option value="{{ $k->id }}" {{ $k->id == $item->kab_id ? 'selected' : '' }}>
-                                                                            {{ $k->nama_kab }}
+                                                                <select class="form-select" name="prov_id" required>
+                                                                    <option value="" disabled>Pilih Provinsi</option>
+                                                                    @foreach ($prov as $p)
+                                                                        <option value="{{ $p->id }}" {{ $p->id == $item->prov_id ? 'selected' : '' }}>
+                                                                            {{ $p->nama_prov }}
                                                                         </option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>                                                            
                                                             <div class="mb-3">
                                                                 <label class="form-label">Kabupaten</label>
-                                                                <input type="text" class="form-control" name="nama_kec" value="{{ $item->nama_kec }}" required>
+                                                                <input type="text" class="form-control" name="nama_kab" value="{{ $item->nama_kab }}" required>
                                                             </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -129,29 +134,25 @@
                                                     </form>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         @endforeach
                                     @endif
                                 </tbody>                                
                             </table>
                         </div>
-                        {{-- paginate --}}
-                        <div class="d-flex justify-content-center">
-                            {{ $kec->links('pagination::bootstrap-5') }}
-                        </div>                        
                     </div>
                 </div>
 
-                {{-- modal tambah prov --}}
-                <div class="modal fade" id="tambahKecModal" tabindex="-1" aria-labelledby="tambahKecModalLabel" aria-hidden="true">
+                {{-- modal tambah desa --}}
+                <div class="modal fade" id="tambahDesaModal" tabindex="-1" aria-labelledby="tambahDesaModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h1 class="modal-title fs-5" id="tambahKecModalLabel">From tambah Kecamatan</h1>
+                          <h1 class="modal-title fs-5" id="tambahDesaModalLabel">From tambah Kelurahan / Desa</h1>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{ route('kec.store')}}" method="POST">
+                            <form action="{{ route('desa.store')}}" method="POST">
                             @csrf
                             <div class="mb-3">
                                 <label class="form-label">Provinsi</label>
@@ -162,7 +163,7 @@
                                     @endforeach
                                 </select>
                             </div>
-
+                            
                             <div class="mb-3">
                                 <label class="form-label">Kabupaten</label>
                                 <select class="form-select" name="kab_id" id="kabupaten" required>
@@ -170,10 +171,16 @@
                                 </select>
                             </div>
 
-                            
                             <div class="mb-3">
                                 <label class="form-label">Kecamatan</label>
-                                <input type="text" class="form-control" name="nama_kec" placeholder="Masukkan Kecamatan" required>
+                                <select class="form-select" name="kec_id" id="kecamatan" required>
+                                    <option value="" disabled selected>Pilih Kecamatan</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Kelurahan / Desa</label>
+                                <input type="text" class="form-control" name="nama_desa" placeholder="Masukkan Kelurahan / Desa" required>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -184,16 +191,17 @@
                         </form>
                     </div>
                 </div>
-                {{-- modal import excel --}}
-                <div class="modal fade" id="importKecModal" tabindex="-1" aria-labelledby="importKecModalLabel" aria-hidden="true">
+
+                 {{-- modal import excel --}}
+                <div class="modal fade" id="importDesaModal" tabindex="-1" aria-labelledby="importDesaModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="importKecModalLabel">Import Data Provinsi dari Excel</h1>
+                                <h1 class="modal-title fs-5" id="importDesaModalLabel">Import Data Provinsi dari Excel</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
 
-                            <form action="{{ route('kecamatan.import') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('kabupaten.import') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="modal-body">
                                     <div class="mb-3">
@@ -211,12 +219,16 @@
                         </div>
                     </div>
                 </div>
+            </div>
         </div>
     </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
+    // 1. Ketika Provinsi dipilih, ambil Kabupaten
     $('#provinsi').on('change', function () {
         let prov_id = $(this).val();
 
@@ -227,6 +239,7 @@
                 dataType: 'json',
                 success: function (data) {
                     $('#kabupaten').empty().append('<option value="">Pilih Kabupaten</option>');
+                    $('#kecamatan').empty().append('<option value="">Pilih Kecamatan</option>');
                     $.each(data, function (key, value) {
                         $('#kabupaten').append('<option value="' + value.id + '">' + value.nama_kab + '</option>');
                     });
@@ -234,8 +247,32 @@
             });
         } else {
             $('#kabupaten').empty().append('<option value="">Pilih Kabupaten</option>');
+            $('#kecamatan').empty().append('<option value="">Pilih Kecamatan</option>');
+        }
+    });
+
+    // 2. Ketika Kabupaten dipilih, ambil Kecamatan
+    $('#kabupaten').on('change', function () {
+        let kab_id = $(this).val();
+
+        if (kab_id) {
+            $.ajax({
+                url: '/get-kecamatan/' + kab_id,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    $('#kecamatan').empty().append('<option value="">Pilih Kecamatan</option>');
+                    $.each(data, function (key, value) {
+                        $('#kecamatan').append('<option value="' + value.id + '">' + value.nama_kec + '</option>');
+                    });
+                }
+            });
+        } else {
+            $('#kecamatan').empty().append('<option value="">Pilih Kecamatan</option>');
         }
     });
 </script>
+
+
 
 @endsection

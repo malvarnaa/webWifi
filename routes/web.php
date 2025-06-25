@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AlamatController;
 use App\Http\Controllers\CalonPelangganController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\PaketController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PesananController;
@@ -55,9 +56,16 @@ Route::middleware(['auth', 'userAkses:admin'])->group(function () {
 
     // Kecamatan
     Route::get('/kecamatan', [AlamatController::class, 'kec'])->name('kec.index');
+    Route::get('/get-kabupaten/{prov_id}', [AlamatController::class, 'getKabupaten']);
+    Route::get('/get-kecamatan/{kab_id}', [AlamatController::class, 'getKecamatan']);
+    Route::get('/get-kelurahan-desa/{kec_id}', [AlamatController::class, 'getDesa']);
     Route::post('/kecamatan', [AlamatController::class, 'kecStore'])->name('kec.store');
     Route::put('/kecamatan/update/{id}', [AlamatController::class, 'kecUpdate'])->name('kec.update');
     Route::delete('/kecamatan/delete/{kec}', [AlamatController::class, 'kecDestroy'])->name('kec.destroy');
+
+    //desa
+    Route::get('/kelurahan-desa', [AlamatController::class, 'desa'])->name('desa.index');
+    Route::post('/kelurahan-desa', [AlamatController::class, 'desaStore'])->name('desa.store');
 
     // Paket Wifi
     Route::get('/paket-wifi', [PaketController::class, 'index'])->name('paket.index');
@@ -78,6 +86,12 @@ Route::middleware(['auth', 'userAkses:admin'])->group(function () {
     // halaman terima tolak pesanan
     Route::post('/pesanan/{id}/terima', [PesananController::class, 'terimaPesanan'])->name('pesanan.terima');
     Route::post('/pesanan/{id}/tolak', [PesananController::class, 'tolakPesanan'])->name('pesanan.tolak');
+
+    //tambah excel
+    Route::post('/provinsi/import', [AlamatController::class, 'importProvinsi'])->name('provinsi.import');
+    Route::post('/kabupaten/import', [AlamatController::class, 'importKabupaten'])->name('kabupaten.import');
+    Route::post('/kecamatan/import', [AlamatController::class, 'importKecamatan'])->name('kecamatan.import');
+
     
 });
 
@@ -98,4 +112,22 @@ Route::get('/register', [CalonPelangganController::class, 'register'])->name('ca
 Route::post('/register', [CalonPelangganController::class, 'registerStore'])->name('register.store');
 Route::get('/get-kabupaten/{prov_id}', [CalonPelangganController::class, 'getKabupaten']);
 Route::get('/get-kecamatan/{kab_id}', [CalonPelangganController::class, 'getKecamatan']);
+Route::get('/get-desa/{kec_id}', [CalonPelangganController::class, 'getDesa']);
+
+
+
+
+
+
+
+// Route dashboard admin untuk melihat data modul
+Route::get('/admin/module', [ModuleController::class, 'index'])->name('module.index'); // Menampilkan data modul
+
+// Route untuk menyimpan data modul baru
+Route::post('/admin/module', [ModuleController::class, 'store'])->name('module.store'); // Menyimpan data modul
+
+Route::get('/module/edit/{id}', [ModuleController::class, 'edit'])->name('module.edit');
+Route::get('/module/{id}', [ModuleController::class, 'show'])->name('module.show');
+Route::get('/module/{id}/edit', [ModuleController::class, 'edit'])->name('module.edit');
+Route::resource('module', ModuleController::class);
 
