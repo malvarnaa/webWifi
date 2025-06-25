@@ -106,8 +106,8 @@ class PesananController extends Controller
     // Fungsi untuk mengirim pesan WhatsApp menggunakan UltraMsg
     private function sendWhatsAppMessage($nomor, $pesan)
     {
-        $instance_id = "instance110795"; // Ganti dengan Instance ID dari UltraMsg
-        $token = "bhqkf7m0ct6ij8hp"; // Ganti dengan Token API dari UltraMsg
+        $instance_id = "instance113525"; // Ganti dengan Instance ID dari UltraMsg
+        $token = "nqksb42xxzusg3tu"; // Ganti dengan Token API dari UltraMsg
 
         // Format nomor HP ke format internasional
         $nomor = preg_replace('/[^0-9]/', '', $nomor); // Hanya angka

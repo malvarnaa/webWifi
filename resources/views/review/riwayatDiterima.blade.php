@@ -14,8 +14,8 @@
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead>
-                                    <tr>
-                                        <th>#</th>
+                                    <tr style="text-align: center">
+                                        <th>No</th>
                                         <th>Nama Customer</th>
                                         <th>Nomor HP</th>
                                         <th>Email</th>
@@ -27,7 +27,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($pesanan as $item)
-                                    <tr>
+                                    <tr style="text-align: center">
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->nama_cust }}</td>
                                         <td>{{ $item->nomor_hp }}</td>
