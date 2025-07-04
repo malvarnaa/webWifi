@@ -6,11 +6,11 @@ use App\Http\Controllers\CalonPelangganController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\PaketController;
-use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\BantuanController;
 use App\Http\Controllers\Admin\PermintaanController;
+use App\Http\Controllers\pelanggan\BantuanController;
+use App\Http\Controllers\pelanggan\PelangganController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -102,15 +102,15 @@ Route::middleware(['auth', 'userAkses:admin'])->group(function () {
 
 
 Route::middleware(['auth', 'userAkses:pelanggan'])->group(function(){
-    Route::get('/dashboard/pelanggan', [PelangganController::class, 'pelangganDashboard'])->name('pelanggan.dashboard');
+    Route::get('/pelanggan/dashboard', [PelangganController::class, 'pelangganDashboard'])->name('pelanggan.dashboard');
 
-    Route::get('/bantuan', [BantuanController::class, 'index'])->name('bantuan.index');
-    Route::post('/bantuan/kirim-pesan', [BantuanController::class, 'kirimPesan'])->name('bantuan.kirimPesan');
-    Route::post('/bantuan/permintaan-service', [BantuanController::class, 'permintaanService'])->name('bantuan.permintaanService');
+    Route::get('/pelanggan/bantuan', [BantuanController::class, 'index'])->name('bantuan.index');
+    Route::post('/pelanggan/bantuan/kirim-pesan', [BantuanController::class, 'kirimPesan'])->name('bantuan.kirimPesan');
+    Route::post('/pelanggan/bantuan/permintaan-service', [BantuanController::class, 'permintaanService'])->name('bantuan.permintaanService');
 });
 
 // Route::middleware(['auth', 'userAkses:calon'])->group(function(){
-//     Route::get('/dashboard/pelanggan', [PelangganController::class, 'pelangganDashboard'])->name('pelanggan.dashboard');
+//     Route::get('/pelanggan/dashboard', [PelangganController::class, 'pelangganDashboard'])->name('pelanggan.dashboard');
 
 // });
 

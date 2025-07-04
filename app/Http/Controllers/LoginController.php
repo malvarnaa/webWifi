@@ -24,12 +24,12 @@ class LoginController extends Controller
 
         if(Auth::attempt($infologin)){
             $role = Auth::user()->role;
-        
+
             switch($role) {
                 case 'admin':
                     return redirect('dashboard/admin')->with('success', 'Anda Berhasil Login ke Admin');
                 case 'pelanggan':
-                    return redirect('dashboard/pelanggan')->with('success', 'Anda Berhasil Login ke Pelanggan');
+                    return redirect('pelanggan/dashboard')->with('success', 'Anda Berhasil Login ke Pelanggan');
                 default:
                     Auth::logout();
                     return redirect()->back()->withErrors('Role tidak ditemukan.');
@@ -38,15 +38,15 @@ class LoginController extends Controller
             return redirect()->back()->with('error', 'Username atau Password yang Anda masukkan salah.');
         }
     }
-    
+
     public function logout(Request $request)
     {
         Auth::logout(); // Logout pengguna
-    
+
         $request->session()->invalidate(); // Hapus semua session yang tersimpan
         $request->session()->regenerateToken(); // Regenerasi token CSRF untuk keamanan
-    
+
         return redirect('/landing-page'); // Redirect ke halaman landing
     }
-    
+
 }
