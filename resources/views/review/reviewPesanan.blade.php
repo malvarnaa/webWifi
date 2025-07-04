@@ -108,7 +108,7 @@
                                             </button>
                                         </form>
                                         
-                                        <button type="button" class="btn btn-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#alasanTolakModal">
+                                        <button type="button" class="btn btn-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#alasanTolakModal{{ $item->id }}">
                                             <i class="bi bi-x-lg"></i> 
                                         </button>                                      
                                     </div>
