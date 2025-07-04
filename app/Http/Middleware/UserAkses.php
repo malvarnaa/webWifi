@@ -18,17 +18,17 @@ class UserAkses
         if (auth()->check() && $request->is('login')) {
             return redirect()->route('dashboard.'.auth()->user()->role);
         }
-    
+
         if (in_array(auth()->user()->role, $roles)) {
             return $next($request);
         }
-    
+
         // Redirect berdasarkan role jika user tidak punya akses
         switch (auth()->user()->role) {
             case 'admin':
                 return redirect('/dashboard/admin');
             case 'pelanggan':
-                return redirect('/dashboard/pelanggan');
+                return redirect('/pelanggan/dashboard');
             case 'calon':
                 return redirect('/dashboard/calon');
             default:

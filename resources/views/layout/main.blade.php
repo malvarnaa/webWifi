@@ -91,11 +91,11 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="../pages/virtual-reality.html">
+          <a class="nav-link " href="{{ route('admin.permintaan.index')}}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-app text-dark text-sm opacity-10"></i>
             </div>
-            <span class="nav-link-text ms-1">Virtual Reality</span>
+            <span class="nav-link-text ms-1">Permintaan bantuan</span>
           </a>
         </li>
         <li class="nav-item">
@@ -134,7 +134,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="/logout">
+          <a class="nav-link " href="{{ route('logout')}}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-collection text-dark text-sm opacity-10"></i>
             </div>
@@ -143,7 +143,7 @@
         </li>
       </ul>
     </div>
-    
+
   </aside>
   <main class="main-content position-relative border-radius-lg ">
     <!-- Navbar -->
@@ -171,7 +171,7 @@
                   <i class="bi bi-person me-sm-1"></i>
                   {{ auth()->user()->name }}
               </h6>
-            </li>        
+            </li>
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-white p-0" id="iconNavbarSidenav">
                 <div class="sidenav-toggler-inner">
@@ -266,7 +266,7 @@
     <!-- End Navbar -->
     <div class="container-fluid py-4">
       @yield('content')
-      
+
     </div>
   </main>
   <div class="fixed-plugin">

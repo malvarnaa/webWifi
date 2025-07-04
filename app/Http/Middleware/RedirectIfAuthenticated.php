@@ -23,7 +23,7 @@ class RedirectIfAuthenticated
                 case 'admin':
                     return redirect('/dashboard/admin');
                 case 'pelanggan':
-                    return redirect('/dashboard/pelanggan');
+                    return redirect('/pelanggan/dashboard');
                 case 'calon':
                     return redirect('/dashboard/calon');
                 default:
