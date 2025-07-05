@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('layout.main_pelanggan')
 
 @section('content')
 <style>
