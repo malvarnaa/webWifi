@@ -27,6 +27,7 @@ class Register extends Model
         'total_harga',
         'latitude',
         'longitude',
+        'status',
     ];
 
     public function prov()
