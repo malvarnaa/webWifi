@@ -103,8 +103,7 @@ Route::middleware(['auth', 'userAkses:admin'])->group(function () {
     Route::get('/daftar-pelanggan', [PelangganController::class, 'data_pelanggan'])->name('daftar.pelanggan');    
     Route::get('/pelanggan/aktif/{id}', [PelangganController::class, 'detail_pelanggan_aktif'])->name('pelanggan.detail');
     // Route::get('/pelanggan/export', [PelangganController::class, 'exportPelanggan'])->name('pelanggan.export');
-    Route::get('/ekspor-pelanggan-aktif/excel', [PelangganController::class, 'eksporExcelPelanggan'])->name('pelanggan.ekspor.excel');
-    Route::get('/ekspor-pelanggan-aktif/pdf', [PelangganController::class, 'eksporPDFPelanggan'])->name('pelanggan.ekspor.pdf');
+    Route::get('/ekspor-pelanggan-aktif/pdf', [PelangganController::class, 'exportPDFPelanggan'])->name('pelanggan.ekspor.pdf');
     Route::get('/pelanggan/pdf', [PelangganController::class, 'PdfPelanggan'])->name('pdf.pelanggan');
 
 });

@@ -2,56 +2,54 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Data Pelanggan</title>
+    <title>Data Pelanggan Aktif</title>
     <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            border: 1px solid #333;
-            padding: 8px;
-            font-size: 12px;
-        }
-
-        th {
-            background-color: #eee;
-        }
+        body { font-family: sans-serif; font-size: 12px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        table, th, td { border: 1px solid #000; }
+        th, td { padding: 8px; text-align: left; }
+        h2, p { text-align: center; margin: 0; }
     </style>
 </head>
 <body>
+
     <h2>Data Pelanggan Aktif</h2>
-    <p>Periode: {{ $start }} - {{ $end }}</p>
+    <p>Periode: {{ $startDate->format('d M Y') }} s/d {{ $endDate->format('d M Y') }}</p>
+
     <table>
         <thead>
             <tr>
-                <th>ID</th>
+                <th>No</th>
                 <th>Nama</th>
-                <th>Email</th>
-                <th>No HP</th>
+                <th>ID Pelanggan</th>
                 <th>NIK</th>
+                <th>No HP</th>
+                <th>Email</th>
                 <th>Alamat</th>
-                <th>Status</th>
-                <th>Tgl Diterima</th>
-                <th>Jatuh Tempo</th>
+                <th>Paket</th>
+                <th>Tanggal Diterima</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($pelanggans as $p)
+            @forelse($data as $index => $item)
                 <tr>
-                    <td>{{ $p->id }}</td>
-                    <td>{{ $p->nama_cust }}</td>
-                    <td>{{ $p->email }}</td>
-                    <td>{{ $p->nomor_hp }}</td>
-                    <td>{{ $p->nik }}</td>
-                    <td>{{ $p->alamat_lengkap }}</td>
-                    <td>{{ $p->status_kepelangganan }}</td>
-                    <td>{{ $p->tanggal_diterima }}</td>
-                    <td>{{ $p->jatuh_tempo }}</td>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $item->nama_cust }}</td>
+                    <td>{{ $item->user->id_pelanggan ?? '-' }}</td>
+                    <td>{{ $item->nik ?? '-' }}</td>
+                    <td>{{ $item->nomor_hp }}</td>
+                    <td>{{ $item->email }}</td>
+                    <td>{{ $item->alamat_lengkap }}, {{ $item->kec->nama_kec ?? '-' }}, {{ $item->kab->nama_kab ?? '-' }}, {{ $item->prov->nama_prov ?? '-' }}</td>
+                    <td>{{ $item->paket->nama_paket ?? '-' }}</td>
+                    <td>{{ \Carbon\Carbon::parse($item->tanggal_diterima)->format('d M Y') }}</td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="9" style="text-align: center;">Tidak ada data tersedia.</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
+
 </body>
 </html>
