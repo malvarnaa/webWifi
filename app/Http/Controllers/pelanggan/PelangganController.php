@@ -38,4 +38,24 @@ class PelangganController extends Controller
         return view('pelanggan.detail_pelanggan_aktif', compact('register'));
     }
 
+    public function exportPDFPelanggan(Request $request)
+    {
+        $startDate = Carbon::parse($request->start_date)->startOfDay();
+        $endDate = Carbon::parse($request->end_date)->endOfDay();
+
+        $data = Register::where('status', 'diterima')
+                        ->whereBetween('tanggal_diterima', [$startDate, $endDate])
+                        ->get();
+
+        if ($data->isEmpty()) {
+            return redirect()->back()->with('warning', 'Data tidak ditemukan untuk tanggal yang dipilih.');
+        }
+
+        $pdf = Pdf::loadView('pdf.pelanggan_export', compact('data', 'startDate', 'endDate'))
+                ->setPaper('A4', 'landscape');
+
+        return $pdf->download('data_pelanggan_' . now()->format('Ymd_His') . '.pdf');
+    }
+
+
 }
