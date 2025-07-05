@@ -16,6 +16,8 @@ class Register extends Model
         'email',
         'nik',
         'foto_ktp',
+        'selfie_ktp',
+        'foto_rumah',
         'paket_id',
         'prov_id',
         'kab_id',
@@ -27,6 +29,10 @@ class Register extends Model
         'total_harga',
         'latitude',
         'longitude',
+        'status',
+        'tanggal_diterima',
+        'jatuh_tempo',
+        'status_kepelangganan',
     ];
 
     public function prov()
@@ -52,5 +58,10 @@ class Register extends Model
     public function paket()
     {
         return $this->belongsTo(Paket::class, 'paket_id', 'id');
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'email', 'email');
     }
 }

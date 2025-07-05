@@ -8,6 +8,7 @@ use App\Models\Kec;
 use App\Models\Paket;
 use App\Models\Prov;
 use App\Models\Register;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CalonPelangganController extends Controller
@@ -44,10 +45,12 @@ class CalonPelangganController extends Controller
     public function registerStore(Request $request) {
         $request->validate([
             'nama_cust' => 'required|string|max:255',
-            'nomor_hp' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'nik' => 'required|string|max:255',
+            'nomor_hp' => 'required|string|max:255|unique:registers,nomor_hp',
+            'email' => 'required|email|max:255|unique:registers,email',
+            'nik' => 'required|string|max:255|unique:registers,nik',
             'foto_ktp' => 'required|file',
+            'selfie_ktp' =>'required|file',
+            'foto_rumah' => 'required|file',
             'paket_id' => 'required|exists:pakets,id',
             'prov_id' => 'required|exists:provs,id',
             'kab_id' => 'required|exists:kabs,id',
@@ -70,6 +73,8 @@ class CalonPelangganController extends Controller
             'nik' => $request->nik,
             'foto_ktp' => $path,
             'paket_id' => $request->paket_id,
+            'selfie_ktp' => $request->selfie_ktp,
+            'foto_rumah' => $request->foto_rumah,
             'prov_id' => $request->prov_id,
             'kab_id' => $request->kab_id,
             'kec_id' => $request->kec_id,
@@ -84,4 +89,6 @@ class CalonPelangganController extends Controller
 
         return redirect()->back()->with('success', 'Data berhasil dikirim!');
     }
+
+
 }

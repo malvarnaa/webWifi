@@ -94,10 +94,19 @@ Route::middleware(['auth', 'userAkses:admin'])->group(function () {
     Route::post('/kabupaten/import', [AlamatController::class, 'importKabupaten'])->name('kabupaten.import');
     Route::post('/kecamatan/import', [AlamatController::class, 'importKecamatan'])->name('kecamatan.import');
 
+
     // konfirmasi permintaan bantuan
     Route::get('/permintaan', [PermintaanController::class, 'index'])->name('admin.permintaan.index');
     Route::get('/permintaan/{id}', [PermintaanController::class, 'show'])->name('admin.permintaan.show');
     Route::post('/permintaan/{id}/status', [PermintaanController::class, 'ubahStatus'])->name('admin.permintaan.status');
+
+    Route::get('/daftar-pelanggan', [PelangganController::class, 'data_pelanggan'])->name('daftar.pelanggan');    
+    Route::get('/pelanggan/aktif/{id}', [PelangganController::class, 'detail_pelanggan_aktif'])->name('pelanggan.detail');
+    // Route::get('/pelanggan/export', [PelangganController::class, 'exportPelanggan'])->name('pelanggan.export');
+    Route::get('/ekspor-pelanggan-aktif/excel', [PelangganController::class, 'eksporExcelPelanggan'])->name('pelanggan.ekspor.excel');
+    Route::get('/ekspor-pelanggan-aktif/pdf', [PelangganController::class, 'eksporPDFPelanggan'])->name('pelanggan.ekspor.pdf');
+    Route::get('/pelanggan/pdf', [PelangganController::class, 'PdfPelanggan'])->name('pdf.pelanggan');
+
 });
 
 

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 
+
 class PesananController extends Controller
 {
     public function riwayatDiterima()
@@ -25,51 +26,79 @@ class PesananController extends Controller
     }
 
      // Menerima pesanan
-     public function terimaPesanan($id) {
+     public function terimaPesanan($id)
+    {
+        // Ambil data pesanan berdasarkan ID
         $pesanan = Register::findOrFail($id);
-        $pesanan->status = 'diterima'; 
-        $pesanan->save(); 
 
-        $lokasiPemasangan = ($pesanan->latitude && $pesanan->longitude) 
-        ? "https://www.google.com/maps?q={$pesanan->latitude},{$pesanan->longitude}" 
-        : 'Lokasi belum tersedia';
+        // Perbarui status dan informasi penting lainnya
+        $pesanan->update([
+            'status' => 'diterima',
+            'tanggal_diterima' => now(),
+            'jatuh_tempo' => now()->copy()->addDays(30),
+            'status_kepelangganan' => 'aktif',
+        ]);
 
+        // Cek apakah lokasi tersedia
+        $lokasiPemasangan = ($pesanan->latitude && $pesanan->longitude)
+            ? "https://www.google.com/maps?q={$pesanan->latitude},{$pesanan->longitude}"
+            : 'Lokasi belum tersedia';
+
+        // Buat password acak untuk akun pelanggan
         $password = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 8);
 
-    // Cek apakah akun pelanggan sudah ada
-    $user = User::where('email', $pesanan->email)->first();
+        // Periksa apakah akun pelanggan sudah ada berdasarkan email
+        $user = User::where('email', $pesanan->email)->first();
 
-    if (!$user) {
-        // Buat akun pelanggan baru
-        $user = User::create([
-            'name' => $pesanan->nama_cust,
-            'email' => $pesanan->email,
-            'password' => Hash::make($password),
-            'role' => 'pelanggan',
-        ]);
+        // Jika akun belum ada, buat akun baru
+        if (!$user) {
+            $prefix = 'CUST';
+            $tanggalSekarang = now();
+            $formatTanggal = $tanggalSekarang->format('ymd');
+            $jumlahHariIni = User::where('id_pelanggan', 'like', $prefix . $formatTanggal . '%')->count() + 1;
+            $kodeUrut = str_pad($jumlahHariIni, 4, '0', STR_PAD_LEFT);
+
+            $id_pelanggan = $prefix . $formatTanggal . $kodeUrut;
+
+            $user = User::create([
+                'name' => $pesanan->nama_cust,
+                'email' => $pesanan->email,
+                'password' => Hash::make($password),
+                'role' => 'pelanggan',
+                'id_pelanggan' => $id_pelanggan,
+            ]);
+        } else {
+            $id_pelanggan = $user->id_pelanggan ?? '-';
+        }
+
+        // Susun pesan notifikasi WhatsApp
+        $pesan = "Halo {$pesanan->nama_cust}, pemesanan WiFi Anda telah kami *terima* dan akan segera diproses. Berikut adalah detail pemasangan yang tercatat:\n\n"
+            . "- *Nama*: {$pesanan->nama_cust}\n"
+            . "- *Alamat*: {$pesanan->alamat_lengkap}, "
+            . (optional($pesanan->kec)->nama_kec ?? '-') . ", "
+            . (optional($pesanan->kab)->nama_kab ?? '-') . ", "
+            . (optional($pesanan->prov)->nama_prov ?? '-') . "\n"
+            . "- *Email*: " . ($pesanan->email ?? '-') . "\n"
+            . "- *Paket WiFi*: " . (optional($pesanan->paket)->nama_paket ?? '-') . "\n"
+            . "- *Lokasi Pemasangan*: {$lokasiPemasangan}\n"
+            . "- *Waktu Pemasangan*: " . ($pesanan->tanggal_pemasangan ?? '-') . "\n"
+            . "- *Harga Paket*: Rp " . number_format($pesanan->total_harga, 0, ',', '.') . "\n"
+            . "- *Pembayaran Via*: " . ($pesanan->metode_pembayaran ?? '-') . "\n"
+            . "- *ID Pelanggan*: {$id_pelanggan}\n\n"
+            . "✅ *Akun pelanggan telah dibuat!*\n"
+            . "- *Email*: {$pesanan->email}\n"
+            . "- *Password*: {$password}\n\n"
+            . "Silakan login ke sistem untuk melihat status dan informasi lebih lanjut. Jika ada pertanyaan, Anda dapat menghubungi admin kami melalui WhatsApp: " . env('ADMIN_WHATSAPP') . "\n\n"
+            . "Terima kasih telah mempercayakan layanan WiFi kepada kami.";
+
+        // Kirim pesan WhatsApp ke pelanggan
+        $this->sendWhatsAppMessage($pesanan->nomor_hp, $pesan);
+
+        // Redirect kembali ke halaman review dengan notifikasi sukses
+        return redirect()->route('review.pesanan')->with('success', 'Pesanan berhasil diterima dan akun pelanggan telah dibuat.');
     }
 
-        // Kirim WhatsApp ke pelanggan
-       $pesan = "Halo {$pesanan->nama_cust}, pemesanan WiFi Anda telah kami terima dan akan segera diproses. Berikut detail pemasangannya:\n\n"
-    . "- *Nama*: {$pesanan->nama_cust}\n"
-    . "- *Alamat*: {$pesanan->alamat_lengkap}, " 
-    . (optional($pesanan->kec)->nama_kec ?? '-') . ", "
-    . (optional($pesanan->kab)->nama_kab ?? '-') . ", "
-    . (optional($pesanan->prov)->nama_prov ?? '-') . "\n"
-    . "- *Email*: " . ($pesanan->email ?? '-') . "\n"
-    . "- *Paket WiFi*: " . (optional($pesanan->paket)->nama_paket ?? '-') . "\n"
-    . "- *Lokasi Pemasangan*: {$lokasiPemasangan}\n"
-    . "- *Waktu Pemasangan*: " . ($pesanan->tanggal_pemasangan ?? '-') . "\n"
-    . "- *Harga Paket*: Rp " . number_format($pesanan->total_harga, 0, ',', '.') . "\n"
-    . "- *Pembayaran Via*: " . ($pesanan->metode_pembayaran ?? '-') . "\n\n"
-    . "✅ *Akun Anda sudah dibuat!*\n"
-    . "- *Email:* {$pesanan->email}\n"
-    . "- *Password:* {$password}\n\n"
-    . "Silakan login ke sistem kami. Jika ada kendala, hubungi admin di " . env('ADMIN_WHATSAPP') . ". Terima kasih.";
-   // Kirim notifikasi WhatsApp
-    $this->sendWhatsAppMessage($pesanan->nomor_hp, $pesan);
-        return redirect()->route('review.pesanan')->with('success', 'Pesanan berhasil diterima.');
-    }
+
 
     // Menolak pesanan dengan alasan
     public function tolakPesanan(Request $request, $id) {

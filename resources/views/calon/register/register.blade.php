@@ -19,7 +19,7 @@
     }
 
     .paket-label input[type="radio"] {
-        display: none; /* Sembunyikan radio button */
+        display: none; 
     }
 
     .paket-label .paket-card {
@@ -29,8 +29,8 @@
     }
 
     .paket-label input[type="radio"]:checked + .paket-card {
-        border: 2px solid #007bff; /* Highlight border biru saat dipilih */
-        background-color: #f8f9fa; /* Warna latar lebih terang */
+        border: 2px solid #007bff;
+        background-color: #f8f9fa; 
     }
 
 
@@ -57,14 +57,11 @@
                 </div>
             @endif 
             @if ($errors->any())
-                <div class="alert alert-danger">    
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+                <div class="alert alert-red">
+                    <strong>Oops!</strong> <span class="ms-1">Ada data yang sudah digunakan</span>
                 </div>
             @endif
+
 
             <div class="alert alert-warning">
                 <i class="bi bi-exclamation-triangle-fill"></i> 
@@ -82,17 +79,25 @@
                     <div class="col-md-6">
                         <label for="">Nomor Handphone*</label>
                         <input type="number" class="form-control" name="nomor_hp" placeholder="Masukkan nomor aktif WhatsApp kamu">
+                        @error('nomor_hp')
+                            <small class="text-warning">{{ $message }}</small>
+                        @enderror                        
                         <small class="text-muted">Pastikan nomor yang dimasukkan aktif WhatsApp</small>
                     </div>
-                
                     <div class="col-md-6">
                         <label for="">Email*</label>
                         <input type="email" class="form-control" name="email" placeholder="Masukkan Email kamu">
+                        @error('email')
+                            <small class="text-warning">{{ $message }}</small>
+                        @enderror                    
                     </div>
                 </div>
                 <div class="mb-3">
                     <label for="">NIK*</label>
                     <input type="number" class="form-control" name="nik" placeholder="Masukkan NIK kamu">
+                    @error('nik')
+                        <small class="text-warning">{{ $message }}</small>
+                    @enderror
                     <small class="text-muted">Pastikan NIK yang dimasukkan terdaftar resmi</small>
                 </div>
                 <div class="mb-3">
@@ -100,6 +105,38 @@
                     <input class="form-control" type="file" id="formFile" name="foto_ktp">
                     <small class="text-muted">Gunakan KTP asli dan jelas untuk verifikasi identitas. Tenang data kamu aman ko!</small>
                 </div>
+                <div class="mb-3">
+                    <label for="formFile" class="form-label">Foto Selfie*</label>
+                    <input class="form-control" type="file" id="formFile" name="selfie_ktp">
+                    <small class="text-muted">Selfie dengan KTP untuk verifikasi. Jangan khawatir, kami jaga kerahasiaannya!</small>
+                </div>
+                <div class="mb-3">
+                    <label for="formFile" class="form-label">Foto Rumah*</label>
+                    <input class="form-control" type="file" id="formFile" name="foto_rumah">
+                    <small class="text-muted">Bantu kami mengenali lokasi kamu. Foto rumah kamu akan dijaga kerahasiaannya</small>
+                </div>
+                {{-- <button type="button" data-bs-toggle="modal" data-bs-target="#selfieModal">Ambil Selfie</button>
+                <div class="mt-3">
+                    <label>Hasil Selfie:</label><br>
+                    <img id="previewSelfie" src="" alt="Belum ada selfie" width="200">
+                    <input type="hidden" name="selfie_ktp" id="selfie_ktp">
+                </div>
+                <div class="modal fade" id="selfieModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Ambil Foto Selfie</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <video id="camera" width="300" height="220" autoplay></video>
+                            <canvas id="snapshot" width="300" height="220" style="display:none;"></canvas>
+                            <br>
+                            <button type="button" class="btn btn-primary mt-2" id="captureSelfie">Cekrek 📸</button>
+                        </div>
+                        </div>
+                    </div>
+                </div> --}}
                 <div class="label-paket">
                     <label for="">Pilih Paket Wifi*</label>
                     <div class="d-flex flex-wrap gap-4">
@@ -171,10 +208,10 @@
                         <option value="bisnis">Bisnis</option>
                     </select>
                 </div>
-                <div class="mb-3">
+                {{-- <div class="mb-3">
                     <label for="">Rencana Tanggal Pemasangan*</label>
                     <input type="date" class="form-control" name="tanggal_pemasangan" placeholder="Masukkan Tanggal rencana pemasangan">
-                </div>
+                </div> --}}
                 <div class="form-group">
                     <label for="total_harga">Total Harga (Bulan Pertama)</label>
                     <input type="number" id="total_harga" name="total_harga" class="form-control" readonly>
@@ -266,8 +303,8 @@
             let harga = this.getAttribute('data-harga'); 
 
             if (harga) {
-                document.getElementById('total_harga').value = harga; // Simpan angka asli
-                document.getElementById('total_harga_display').textContent = formatRupiah(harga); // Tampilkan format rupiah
+                document.getElementById('total_harga').value = harga;
+                document.getElementById('total_harga_display').textContent = formatRupiah(harga); 
             } else {
                 document.getElementById('total_harga').value = '';
                 document.getElementById('total_harga_display').textContent = '';
@@ -321,6 +358,44 @@
         preview.style.display = 'none';
         }
     }
+
+
+    // document.addEventListener('DOMContentLoaded', function () {
+    //     const video = document.getElementById('camera');
+    //     const canvas = document.getElementById('snapshot');
+    //     const preview = document.getElementById('previewSelfie');
+    //     const inputSelfie = document.getElementById('selfie_ktp');
+
+    //     //buka modal trs aktif kamera
+    //     const selfieModal = document.getElementById('selfieModal');
+    //     selfieModal.addEventListener('shown.bs.modal', () => {
+    //         navigator.mediaDevices.getUserMedia({ video: true })
+    //             .then(stream => {
+    //                 video.srcObject = stream;
+    //             })
+    //             .catch(err => {
+    //                 alert("Tidak bisa akses kamera: " + err);
+    //             });
+    //     });
+
+    //     // klik tombol cekrek
+    //     document.getElementById('captureSelfie').addEventListener('click', function () {
+    //         const context = canvas.getContext('2d');
+    //         context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    //         const imageData = canvas.toDataURL('image/png');
+    //         preview.src = imageData;
+    //         inputSelfie.value = imageData;
+
+    //         // Stop kamera & tutup modal
+    //         const stream = video.srcObject;
+    //         const tracks = stream.getTracks();
+    //         tracks.forEach(track => track.stop());
+
+    //         const modal = bootstrap.Modal.getInstance(selfieModal);
+    //         modal.hide();
+    //     });
+    // });
 </script>
 
 @endsection

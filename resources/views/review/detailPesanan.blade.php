@@ -18,10 +18,18 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-hover">
+                            {{-- <tr>
+                                <td>ID Pelanggan</td>
+                                <td>: {{ $register->id_pelanggan ?? '-' }}</td>
+                            </tr> --}}
                             <tr>
                                 <td>Nama Pemesan</td>
                                 <td>: {{ $register->nama_cust }}</td>
                             </tr> 
+                            <tr>
+                                <td>NIK</td>
+                                <td>: {{ $register->nik ?? '-' }}</td>
+                            </tr>
                             <tr>
                                 <td>Nomor HP / Telepon</td>
                                 <td>: {{ $register->nomor_hp }}</td>
@@ -55,15 +63,68 @@
                                 <td>: Rp {{ number_format($register->total_harga, 0, ',', '.') }}</td>
                             </tr>
                             <tr>
-                                <td>Pembayaran</td>
-                                <td>:</td>
-                            </tr>                            
+                                <td>Metode Pembayaran</td>
+                                <td>: {{ $register->metode_pembayaran ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td>Foto KTP</td>
+                                <td>: <a href="#" data-bs-toggle="modal" data-bs-target="#modalKTP">Lihat Foto</a></td>
+                            </tr>
+                            <tr>
+                                <td>Selfie dengan KTP</td>
+                                <td>: <a href="#" data-bs-toggle="modal" data-bs-target="#modalSelfie">Lihat Foto</a></td>
+                            </tr>
+                            <tr>
+                                <td>Foto Rumah</td>
+                                <td>: <a href="#" data-bs-toggle="modal" data-bs-target="#modalRumah">Lihat Foto</a></td>
+                            </tr>
                         </table>
                     </div>
+
+                    {{-- Modal Foto --}}
+                    <div class="modal fade" id="modalKTP" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-body text-center">
+                                    <img src="{{ asset('storage/' . $register->foto_ktp) }}" class="img-fluid" alt="Foto KTP">
+                                </div>
+                                <div class="modal-footer justify-content-center">
+                                    <button class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="modalSelfie" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-body text-center">
+                                    <img src="{{ asset('storage/' . $register->selfie_ktp) }}" class="img-fluid" alt="Selfie KTP">
+                                </div>
+                                <div class="modal-footer justify-content-center">
+                                    <button class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="modalRumah" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-body text-center">
+                                    <img src="{{ asset('storage/' . $register->foto_rumah) }}" class="img-fluid" alt="Foto Rumah">
+                                </div>
+                                <div class="modal-footer justify-content-center">
+                                    <button class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <input type="hidden" id="latitude" value="{{ $register->latitude }}">
                     <input type="hidden" id="longitude" value="{{ $register->longitude }}">
-
                     <div id="map" style="height: 400px; width: 100%;"></div>
+
                     <div class="d-flex justify-content-between mt-3">
                         <a href="{{ route('review.pesanan') }}" class="btn btn-secondary">Kembali</a>
                     </div>  
@@ -72,6 +133,7 @@
         </div>
     </div>
 </div>
+
 <script>
     function initMap() {
         var latitude = parseFloat(document.getElementById("latitude").value) || -6.2088;
@@ -88,6 +150,5 @@
         });
     }
 </script>
-
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBc6EeNk7cMFcZoBmaHGzCh4cJk-Blukxk&callback=initMap" async defer></script>
 @endsection
