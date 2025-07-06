@@ -10,7 +10,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="mb-0">Detail Pesanan</h5>
                         </div>
-                    </div>                        
+                    </div>
                 </div>
             </div>
 
@@ -25,7 +25,7 @@
                             <tr>
                                 <td>Nama Pemesan</td>
                                 <td>: {{ $register->nama_cust }}</td>
-                            </tr> 
+                            </tr>
                             <tr>
                                 <td>NIK</td>
                                 <td>: {{ $register->nik ?? '-' }}</td>
@@ -40,9 +40,9 @@
                             </tr>
                             <tr>
                                 <td>Alamat Lengkap</td>
-                                <td>: {{ $register->alamat_lengkap }}, 
-                                    {{ $register->kec->nama_kec ?? '-' }}, 
-                                    {{ $register->kab->nama_kab ?? '-' }}, 
+                                <td>: {{ $register->alamat_lengkap }},
+                                    {{ $register->kec->nama_kec ?? '-' }},
+                                    {{ $register->kab->nama_kab ?? '-' }},
                                     {{ $register->prov->nama_prov ?? '-' }}
                                 </td>
                             </tr>
@@ -127,7 +127,7 @@
 
                     <div class="d-flex justify-content-between mt-3">
                         <a href="{{ route('review.pesanan') }}" class="btn btn-secondary">Kembali</a>
-                    </div>  
+                    </div>
                 </div>
             </div>
         </div>
