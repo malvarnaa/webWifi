@@ -11,6 +11,7 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\Admin\PermintaanController;
 use App\Http\Controllers\pelanggan\BantuanController;
 use App\Http\Controllers\pelanggan\PelangganController;
+use App\Http\Controllers\pelanggan\StatusLayananController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -112,6 +113,10 @@ Route::middleware(['auth', 'userAkses:admin'])->group(function () {
 Route::middleware(['auth', 'userAkses:pelanggan'])->group(function(){
     Route::get('/pelanggan/dashboard', [PelangganController::class, 'pelangganDashboard'])->name('pelanggan.dashboard');
 
+    // status layanan
+    Route::get('/pelanggan/status_layanan', [StatusLayananController::class, 'statusLayanan'])->name('statusLayanan.index');
+
+    // bantuan layanan pelanggan
     Route::get('/pelanggan/bantuan', [BantuanController::class, 'index'])->name('bantuan.index');
     Route::post('/pelanggan/bantuan/kirim-pesan', [BantuanController::class, 'kirimPesan'])->name('bantuan.kirimPesan');
     Route::post('/pelanggan/bantuan/permintaan-service', [BantuanController::class, 'permintaanService'])->name('bantuan.permintaanService');
