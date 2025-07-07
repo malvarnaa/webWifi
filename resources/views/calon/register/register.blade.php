@@ -215,8 +215,17 @@
                 <div class="form-group">
                     <label for="total_harga">Total Harga (Bulan Pertama)</label>
                     <input type="number" id="total_harga" name="total_harga" class="form-control" readonly>
+                
+                    {{-- Menampilkan harga yang sudah diformat --}}
                     <p id="total_harga_display" style="margin-top: 5px; font-weight: bold;"></p>
+                
+                    {{-- Menampilkan informasi promo --}}
+                    <div id="promo_info" class="text-success fw-bold mt-2"></div>
+                
+                    {{-- Hidden input untuk menyimpan promo_id jika digunakan --}}
+                    <input type="hidden" name="promo_id" id="promo_id">
                 </div>
+                
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Kirim</button>
                 </div>
@@ -396,6 +405,55 @@
     //         modal.hide();
     //     });
     // });
+
+    const promos = @json($promos);
+
+function formatRupiah(angka) {
+    return 'Rp ' + new Intl.NumberFormat('id-ID').format(angka);
+}
+
+document.querySelectorAll('.paket-radio').forEach(radio => {
+    radio.addEventListener('change', function () {
+        const harga = parseFloat(this.getAttribute('data-harga'));
+        let bestPromo = null;
+
+        promos.forEach(promo => {
+        const promoUntukSemuaPaket = promo.paket_id === null;
+        const promoUntukPaketIni = promo.paket_id == this.value; // this.value = id paket
+
+        if ((promoUntukSemuaPaket || promoUntukPaketIni) && harga >= promo.minimal_pembelian) {
+            if (!bestPromo || promo.diskon > bestPromo.diskon) {
+                bestPromo = promo;
+            }
+        }
+    });
+
+
+        let totalHarga = harga;
+        let info = '';
+        let promoId = '';
+
+        if (bestPromo) {
+            promoId = bestPromo.id;
+
+            if (bestPromo.tipe_diskon === 'persen') {
+                const potongan = harga * bestPromo.diskon / 100;
+                totalHarga -= potongan;
+                info = `Promo <b>${bestPromo.nama_promo}</b> digunakan. Diskon <b>${bestPromo.diskon}%</b>.`;
+            } else if (bestPromo.tipe_diskon === 'nominal') {
+                totalHarga -= bestPromo.diskon;
+                info = `Promo <b>${bestPromo.nama_promo}</b> digunakan. Potongan <b>Rp ${new Intl.NumberFormat('id-ID').format(bestPromo.diskon)}</b>.`;
+            }
+        } else {
+            info = 'Tidak ada promo yang berlaku.';
+        }
+
+        document.getElementById('total_harga').value = totalHarga;
+        document.getElementById('total_harga_display').textContent = formatRupiah(totalHarga);
+        document.getElementById('promo_info').innerHTML = info;
+        document.getElementById('promo_id').value = promoId;
+    });
+});
 </script>
 
 @endsection

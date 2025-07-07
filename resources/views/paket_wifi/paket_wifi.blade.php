@@ -61,20 +61,49 @@
                     </div>
                     <div class="card mb-3">
                         <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                                 <h5 class="mb-0">Daftar Paket Wifi</h5>
-                                @if(auth()->user()->role == 'admin')
-                                <button type="button" class="btn btn-primary btn-sm rounded-pill" style="background-color: #344767" data-bs-toggle="modal" data-bs-target="#tambahPaketModal">
-                                    <i class="bi bi-plus"></i>
-                                    <span class="d-none d-md-inline">Tambah</span>
-                                </button>
-                                @endif
-                            </div>
+                            
+                                {{-- Tombol Tambah dan Form Pencarian --}}
+                                <div class="d-flex align-items-center ms-auto gap-2">
+                            
+                                    {{-- Form Pencarian --}}
+                                    <form class="d-flex align-items-center"
+                                        method="GET" action="{{ route('cari.paket') }}"
+                                        style="border: 1px solid #ccc; border-radius: 50px; padding: 0 12px; height: 38px; margin-top: -10px;">
+                                        
+                                        <input type="text" name="search" class="form-control border-0 shadow-none p-0"
+                                            placeholder="Filter & Pencarian"
+                                            style="background: transparent; font-size: 14px; height: 100%; width: 150px;"
+                                            value="{{ request('search') }}">
+                            
+                                        @if(request('search'))
+                                            <a href="{{ route('paket.index') }}" style="background: none; border: none; text-decoration: none;">
+                                                <i class="bi bi-x-lg" style="font-size: 1rem; color: #344767;"></i>
+                                            </a>
+                                        @else
+                                            <button type="submit" style="background: none; border: none;">
+                                                <i class="bi bi-search" style="font-size: 1rem; color: #344767;"></i>
+                                            </button>
+                                        @endif
+                                    </form>
+                            
+                                    {{-- Tombol Tambah (hanya admin) --}}
+                                    @if(auth()->user()->role == 'admin')
+                                    <button type="button" class="btn btn-primary btn-sm rounded-pill" style="background-color: #344767"
+                                        data-bs-toggle="modal" data-bs-target="#tambahPaketModal">
+                                        <i class="bi bi-plus"></i>
+                                        <span class="d-none d-md-inline">Tambah</span>
+                                    </button>
+                                    @endif
+                            
+                                </div>
+                            </div>                            
                         </div>
                     </div>
                     @if ($paket->isEmpty())
                     <div class="alert alert-warning">
-                        Belum paket yang tersedia.
+                        Belum ada paket yang tersedia.
                     </div>
                     @else
                         @foreach ($paket as $item)

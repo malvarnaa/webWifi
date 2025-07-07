@@ -10,6 +10,25 @@
                             <h5 class="mb-0">Cakupan Wilayah</h5>
                         
                             <div class="d-flex align-items-center gap-2">
+                                <form class="d-flex align-items-center"
+                                method="GET" action="{{ route('cari.desa') }}"
+                                style="border: 1px solid #ccc; border-radius: 50px; padding: 0 12px; height: 38px; margin-top: -10px;">
+                                
+                                <input type="text" name="search" class="form-control border-0 shadow-none p-0"
+                                    placeholder="Filter & Pencarian"
+                                    style="background: transparent; font-size: 14px; height: 100%; width: 150px;"
+                                    value="{{ request('search') }}">
+                    
+                                @if(request('search'))
+                                    <a href="{{ route('desa.index') }}" style="background: none; border: none; text-decoration: none;">
+                                        <i class="bi bi-x-lg" style="font-size: 1rem; color: #344767;"></i>
+                                    </a>
+                                @else
+                                    <button type="submit" style="background: none; border: none;">
+                                        <i class="bi bi-search" style="font-size: 1rem; color: #344767;"></i>
+                                    </button>
+                                @endif
+                            </form>
                                 <div class="btn-group">
                                     <button class="btn btn-secondary btn-sm dropdown-toggle rounded-pill" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         Pilih Wilayah

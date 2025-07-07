@@ -61,6 +61,31 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
                                 <h5 class="mb-0">Review Pesanan Paket Wifi</h5>
+
+                                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                    {{-- Form Pencarian --}}
+                                    <form class="d-flex align-items-center"
+                                    method="GET" action="{{ route('pesanan.cari') }}"
+                                    style="border: 1px solid #ccc; border-radius: 50px; padding: 0 12px; height: 38px; margin-top: -10px;">
+                                    
+                                    <input type="text" name="search" class="form-control border-0 shadow-none p-0"
+                                        placeholder="Filter & Pencarian"
+                                        style="background: transparent; font-size: 14px; height: 100%; width: 150px;"
+                                        value="{{ request('search') }}">
+
+                                    @if(request('search'))
+                                        <a href="{{ route('review.pesanan') }}" style="background: none; border: none; text-decoration: none;">
+                                            <i class="bi bi-x-lg" style="font-size: 1rem; color: #344767;"></i>
+                                        </a>
+                                    @else
+                                        <button type="submit" style="background: none; border: none;">
+                                            <i class="bi bi-search" style="font-size: 1rem; color: #344767;"></i>
+                                        </button>
+                                    @endif
+                                </form>
+
+
+
                                 <div class="d-flex gap-2">
                                     <a href="{{ route('riwayat.diterima')}}" class="btn btn-success rounded-pill">
                                         <i class="bi bi-check2"></i>
@@ -75,6 +100,7 @@
                                         </span>
                                     </a>
                                 </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -88,6 +114,7 @@
                         Tidak ada data yang tersedia.
                     </div>
                     @else
+                    
                         @foreach ($register as $item)
                         <div class="card mb-3 shadow-sm card-hover p-3">
                             <div class="card-body">
@@ -97,6 +124,7 @@
                                             {{ $item->nama_cust }}
                                         </div>                    
                                     </div>
+
                                     <div class="d-flex gap-2">
                                         <a href="{{ route('pesanan.show', $item->id) }}" class="btn btn-hover rounded-pill">
                                             <i class="bi bi-eye-fill"></i>
@@ -157,11 +185,12 @@
                         </div>
                         <div class="modal fade" id="alasanTolakModal{{ $item->id }}" tabindex="-1" aria-labelledby="alasanTolakModalLabel{{ $item->id }}" aria-hidden="true">
                             <div class="modal-dialog">
+                                <div class="modal-content">
                                 <form action="{{ route('pesanan.tolak', $item->id) }}" method="POST">
                                     @csrf
                                     <div class="modal-body">
                                         <div class="mb-3">
-                                            <label>Kirim Pesan Alasan Penolakan Pesanan:</label>
+                                            <label class="form-label">Kirim Pesan Alasan Penolakan Pesanan:</label>
                                             <input type="text" name="alasan" class="form-control" placeholder="Ketik Alasan Penolakan">
                                         </div>
                                     </div>
@@ -169,7 +198,8 @@
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                                         <button type="submit" class="btn btn-primary">Tolak</button>
                                     </div>
-                                </form>                                                                             
+                                </form>
+                                </div>                                                                             
                               </div>
                             </div>
                         </div>
@@ -180,3 +210,5 @@
         </div>
     </div>
 @endsection
+
+
