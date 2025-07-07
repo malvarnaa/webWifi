@@ -13,6 +13,7 @@ use App\Http\Controllers\pelanggan\BantuanController;
 use App\Http\Controllers\pelanggan\PelangganController;
 use App\Http\Controllers\pelanggan\StatusLayananController;
 use App\Http\Controllers\pelanggan\TagihanDanPembayaranController;
+use App\Http\Controllers\PromoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -51,12 +52,16 @@ Route::middleware(['auth', 'userAkses:admin'])->group(function () {
     Route::post('/provinsi', [AlamatController::class, 'provStore'])->name('prov.store');
     Route::put('/provinsi/update/{id}', [AlamatController::class, 'provUpdate'])->name('prov.update');
     Route::delete('/provinsi/delete/{prov}', [AlamatController::class, 'destroy'])->name('prov.destroy');
+    Route::get('/cari-provinsi', [AlamatController::class, 'cariProv'])->name('cari.prov');
+
 
     // Kabupaten
     Route::get('/kabupaten', [AlamatController::class, 'kab'])->name('kab.index');
     Route::post('/kabupaten', [AlamatController::class, 'kabStore'])->name('kab.store');
     Route::put('/kabupaten/update/{id}', [AlamatController::class, 'kabUpdate'])->name('kab.update');
     Route::delete('/kabupaten/delete/{kab}', [AlamatController::class, 'kabDestroy'])->name('kab.destroy');
+    Route::get('/cari-kabupaten', [AlamatController::class, 'cariKab'])->name('cari.kab');
+
 
     // Kecamatan
     Route::get('/kecamatan', [AlamatController::class, 'kec'])->name('kec.index');
@@ -66,10 +71,14 @@ Route::middleware(['auth', 'userAkses:admin'])->group(function () {
     Route::post('/kecamatan', [AlamatController::class, 'kecStore'])->name('kec.store');
     Route::put('/kecamatan/update/{id}', [AlamatController::class, 'kecUpdate'])->name('kec.update');
     Route::delete('/kecamatan/delete/{kec}', [AlamatController::class, 'kecDestroy'])->name('kec.destroy');
+    Route::get('/cari-kecamatan', [AlamatController::class, 'cariKec'])->name('cari.kec');
+
 
     //desa
     Route::get('/kelurahan-desa', [AlamatController::class, 'desa'])->name('desa.index');
     Route::post('/kelurahan-desa', [AlamatController::class, 'desaStore'])->name('desa.store');
+    Route::get('/cari-desa', [AlamatController::class, 'cariDesa'])->name('cari.desa');
+
 
     // Paket Wifi
     Route::get('/paket-wifi', [PaketController::class, 'index'])->name('paket.index');
@@ -78,14 +87,22 @@ Route::middleware(['auth', 'userAkses:admin'])->group(function () {
     Route::put('/paket-wifi/update/{paket}', [PaketController::class, 'update'])->name('paket.update');
     Route::get('/paket-wifi/{paket}', [PaketController::class, 'show'])->name('paket.show');
     Route::delete('/paket/{paket}', [PaketController::class, 'destroy'])->name('paket.destroy');
+    Route::get('/cari-paket', [PaketController::class, 'cari'])->name('cari.paket');
+
 
     // Review Pesanan
     Route::get('/review-pesanan', [ReviewController::class, 'reviewPesanan'])->name('review.pesanan');
     Route::get('/review-pesanan/{id}', [ReviewController::class, 'showPesanan'])->name('pesanan.show');
 
+    Route::get('/cari-pesanan', [PesananController::class, 'cari'])->name('pesanan.cari');
+
     // riwayat pesanan
     Route::get('/riwayat/diterima', [PesananController::class, 'riwayatDiterima'])->name('riwayat.diterima');
     Route::get('/riwayat/ditolak', [PesananController::class, 'riwayatDitolak'])->name('riwayat.ditolak');
+
+    Route::get('/riwayat-diterima/cari', [ReviewController::class, 'cariDiterima'])->name('cari.diterima');
+    Route::get('/riwayat-ditolak/cari', [ReviewController::class, 'cariDitolak'])->name('cari.ditolak');
+
 
     // halaman terima tolak pesanan
     Route::post('/pesanan/{id}/terima', [PesananController::class, 'terimaPesanan'])->name('pesanan.terima');
@@ -107,6 +124,17 @@ Route::middleware(['auth', 'userAkses:admin'])->group(function () {
     // Route::get('/pelanggan/export', [PelangganController::class, 'exportPelanggan'])->name('pelanggan.export');
     Route::get('/ekspor-pelanggan-aktif/pdf', [PelangganController::class, 'exportPDFPelanggan'])->name('pelanggan.ekspor.pdf');
     Route::get('/pelanggan/pdf', [PelangganController::class, 'PdfPelanggan'])->name('pdf.pelanggan');
+
+    //Promo
+    Route::get('/promo-paket', [PromoController::class, 'index'])->name('promo.paket');
+    Route::post('/promo-paket', [PromoController::class, 'store'])->name('promo.store');
+    Route::get('/promo-paket/{promo}', [PromoController::class, 'show'])->name('promo.show');
+    Route::get('/promo-paket/edit/{promo}', [PromoController::class, 'edit'])->name('promo.edit');
+    Route::put('/promo/{id}', [PromoController::class, 'update'])->name('promo.update');
+    Route::delete('/promo/{promo}', [PromoController::class, 'destroy'])->name('promo.destroy');
+    Route::get('/cari-promo', [PromoController::class, 'cari'])->name('cari.promo');
+
+
 
 });
 

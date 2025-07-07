@@ -83,6 +83,22 @@ class PaketController extends Controller
     
         return redirect()->route('paket.index')->with('success', 'Data berhasil diperbarui.');
     }
+
+    public function cari(Request $request)
+    {
+        $query = Paket::query();
+    
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('nama_paket', 'like', "%$search%")
+                  ->orWhere('kecepatan', 'like', "%$search%")
+                  ->orWhere('harga', 'like', "%$search%");
+        }
+    
+        $paket = $query->latest()->get(); 
+    
+        return view('paket_wifi.paket_wifi', compact('paket'));
+    }
     
 
     /**

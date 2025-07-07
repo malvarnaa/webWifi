@@ -44,7 +44,20 @@ class AlamatController extends Controller
     
         return redirect()->back()->with('success', 'Data berhasil diperbarui!');
     }
-    
+
+    public function cariProv(Request $request)
+{
+    $query = Prov::query();
+
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->where('nama_prov', 'like', "%$search%");
+    }
+
+    $prov = $query->latest()->paginate(10); // ✅ Ganti get() jadi paginate
+
+    return view('alamat.prov.prov', compact('prov'));
+}
 
     public function destroy(Prov $prov) {
         $prov->delete();
@@ -88,6 +101,27 @@ class AlamatController extends Controller
         return redirect()->back()->with('success', 'Data berhasil diperbarui!');
     }
     
+    public function cariKab(Request $request)
+    {
+        $query = Kab::with('prov'); // pastikan relasi prov() sudah didefinisikan di model Kab
+    
+        if ($request->filled('search')) {
+            $search = $request->search;
+    
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_kab', 'like', "%$search%")
+                  ->orWhereHas('prov', function ($provQuery) use ($search) {
+                      $provQuery->where('nama_prov', 'like', "%$search%");
+                  });
+            });
+        }
+    
+        $kab = $query->latest()->paginate(10); // ✅ gunakan pagination
+    
+        $prov = Prov::all(); // untuk dropdown pilihan provinsi di form, jika ada
+    
+        return view('alamat.kab.kab', compact('kab', 'prov'));
+    }
 
     public function kabDestroy(Kab $kab) {
         $kab->delete();
@@ -148,6 +182,32 @@ class AlamatController extends Controller
         return redirect()->back()->with('success', 'Data berhasil diperbarui!');
     }
 
+    public function cariKec(Request $request)
+    {
+        $query = Kec::with('prov' , 'kab'); // pastikan relasi prov() sudah didefinisikan di model Kab
+    
+        if ($request->filled('search')) {
+            $search = $request->search;
+    
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_kec', 'like', "%$search%")
+                  ->orWhereHas('kab', function ($kabQuery) use ($search) {
+                      $kabQuery->where('nama_kab', 'like', "%$search%")
+                               ->orWhereHas('prov', function ($provQuery) use ($search) {
+                                   $provQuery->where('nama_prov', 'like', "%$search%");
+                               });
+                  });
+            });
+        }
+    
+        $kec = $query->latest()->paginate(10); // ✅ gunakan pagination
+    
+        $prov = Prov::all(); // untuk dropdown pilihan provinsi di form, jika ada
+        $kab = Kab::all(); // untuk dropdown pilihan provinsi di form, jika ada
+    
+        return view('alamat.kec.kec', compact('kec','kab', 'prov'));
+    }
+
     public function kecDestroy(Kec $kec){
         $kec->delete();
         return redirect()->back()->with('success', 'Data berhasil dihapus!');
@@ -174,6 +234,37 @@ class AlamatController extends Controller
 
         return redirect()->back()->with('success', 'Data berhasil ditembahkan!');
     }
+
+    public function cariDesa(Request $request)
+    {
+        $query = Desa::with('kec.kab.prov');
+    
+        if ($request->filled('search')) {
+            $search = $request->search;
+    
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_desa', 'like', "%$search%")
+                  ->orWhereHas('kec', function ($kecQuery) use ($search) {
+                      $kecQuery->where('nama_kec', 'like', "%$search%")
+                               ->orWhereHas('kab', function ($kabQuery) use ($search) {
+                                   $kabQuery->where('nama_kab', 'like', "%$search%")
+                                             ->orWhereHas('prov',function ($provQuery) use ($search) {
+                                                $provQuery->where('nama_prov', 'like',"%$search%");
+                                            });
+                               });
+                  });
+            });
+        }
+    
+        $desa = $query->latest()->paginate(10); 
+
+        $prov = Prov::all(); 
+        $kab = Kab::all();
+        $kec = Kec::all(); 
+    
+        return view('alamat.desa.desa', compact('desa','kec','kab', 'prov'));
+    }
+
 
     //import
     public function importProvinsi(Request $request)

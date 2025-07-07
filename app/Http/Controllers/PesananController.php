@@ -155,4 +155,24 @@ class PesananController extends Controller
 
         return $response->json();
     }
+
+    public function cari(Request $request)
+    {
+        $query = Register::query()
+            ->where('status', 'pending'); // hanya tampilkan pesanan yang pending
+    
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nama_cust', 'like', "%$search%")
+                  ->orWhere('nik', 'like', "%$search%")
+                  ->orWhere('email', 'like', "%$search%");
+            });
+        }
+    
+        $register = $query->latest()->get();
+    
+        return view('review.reviewPesanan', compact('register'));
+    }
+    
 }

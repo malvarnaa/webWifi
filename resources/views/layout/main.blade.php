@@ -32,6 +32,11 @@
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   {{-- bootstrap cdn icon --}}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+<!-- Nucleo Icons CSS -->
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link href="https://demos.creative-tim.com/soft-ui-dashboard/assets/css/nucleo-icons.css" rel="stylesheet">
+<link href="https://demos.creative-tim.com/soft-ui-dashboard/assets/css/nucleo-svg.css" rel="stylesheet">
+
 
   <!-- CSS Files -->
   <link id="pagestyle" href="{{ asset('tmp/assets/css/argon-dashboard.css?v=2.1.0')}}" rel="stylesheet" />
@@ -58,42 +63,83 @@
             <span class="nav-link-text ms-1">Dashboard</span>
           </a>
         </li>
+
         <li class="nav-item">
-          <a class="nav-link " href="{{ route('paket.index')}}">
+          <a class="nav-link collapsed" data-bs-toggle="collapse" href="#dataMasterMenu" role="button" aria-expanded="false" aria-controls="dataMasterMenu">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-calendar-grid-58 text-dark text-sm opacity-10"></i>
+              <i class="ni ni-archive-2 text-dark text-sm opacity-10"></i>
             </div>
-            <span class="nav-link-text ms-1">Paket</span>
+            <span class="nav-link-text ms-1">Data Master</span>
           </a>
-        </li>
-        <li class="nav-item">
-        <a class="nav-link" href="{{ route('daftar.pelanggan') }}">
-          <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-            <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
+          <div class="collapse" id="dataMasterMenu">
+            <ul class="nav ms-2 ps-1">
+              <li class="nav-item">
+              <a class="nav-link" href="{{ route('paket.index') }}">
+                <div class="icon icon-shape icon-sm border-radius-md text-center me-1 d-flex align-items-center justify-content-center">
+                  <i class="ni ni-planet text-dark text-sm opacity-10"></i>
+                </div>
+                <span class="nav-link-text ms-0">Master Paket Internet</span>
+              </a>             
+              </li> 
+
+              <li class="nav-item">
+                <a class="nav-link " href="{{ route('daftar.pelanggan') }}">
+                  <div class="icon icon-shape icon-sm border-radius-md text-center me-1 d-flex align-items-center justify-content-center">
+                    <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
+                  </div>
+                  <span class="nav-link-text ms-0"> Master Pelanggan</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="#">
+                  <div class="icon icon-shape icon-sm border-radius-md text-center me-1 d-flex align-items-center justify-content-center">
+                    <i class="ni ni-credit-card text-dark text-sm opacity-10"></i>
+                  </div>
+                  <span class="nav-link-text ms-0"> Master Pembayaran</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="{{ route('promo.paket') }}">
+                  <div class="icon icon-shape icon-sm border-radius-md text-center me-1 d-flex align-items-center justify-content-center">
+                    <i class="ni ni-tag text-dark text-sm opacity-10"></i>
+                  </div>
+                  <span class="nav-link-text ms-0"> Master Promo</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="#">
+                  <div class="icon icon-shape icon-sm border-radius-md text-center me-1 d-flex align-items-center justify-content-center">
+                    <i class="ni ni-paper-diploma text-dark text-sm opacity-10"></i>
+                  </div>
+                  <span class="nav-link-text ms-0"> Master Tagihan</span>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link " href="{{ route('prov.index')}}">
+                  <div class="icon icon-shape icon-sm border-radius-md text-center me-1 d-flex align-items-center justify-content-center">
+                    <i class="ni ni-pin-3 text-dark text-sm opacity-10"></i>
+                  </div>
+                  <span class="nav-link-text ms-0">Master Wilayah</span>
+                </a>
+              </li>
+
+            </ul>
           </div>
-          <span class="nav-link-text ms-1">Data Pelanggan</span>
-        </a>
-      </li>
-        <li class="nav-item">
-          <a class="nav-link " href="{{ route('prov.index')}}">
-            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-calendar-grid-58 text-dark text-sm opacity-10"></i>
-            </div>
-            <span class="nav-link-text ms-1">Cakupan Wilayah</span>
-          </a>
         </li>
-        <li class="nav-item">
+        
+        {{-- <li class="nav-item">
           <a class="nav-link " href="../pages/billing.html">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-credit-card text-dark text-sm opacity-10"></i>
             </div>
             <span class="nav-link-text ms-1">Billing</span>
           </a>
-        </li>
+        </li> --}}
         <li class="nav-item">
           <a class="nav-link " href="{{ route('review.pesanan')}}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-credit-card text-dark text-sm opacity-10"></i>
+              <i class="ni ni-check-bold text-dark text-sm opacity-10"></i>
             </div>
             <span class="nav-link-text ms-1">Review Pesanan</span>
           </a>

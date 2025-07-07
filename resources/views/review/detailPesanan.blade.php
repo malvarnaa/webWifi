@@ -68,15 +68,21 @@
                             </tr>
                             <tr>
                                 <td>Foto KTP</td>
-                                <td>: <a href="#" data-bs-toggle="modal" data-bs-target="#modalKTP">Lihat Foto</a></td>
+                                <td>:                                    
+                                     <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalKTP">Lihat Foto</button>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Selfie dengan KTP</td>
-                                <td>: <a href="#" data-bs-toggle="modal" data-bs-target="#modalSelfie">Lihat Foto</a></td>
+                                <td>:                                     
+                                    <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalSelfie">Lihat Foto</button>
+                                </td>                                
                             </tr>
                             <tr>
                                 <td>Foto Rumah</td>
-                                <td>: <a href="#" data-bs-toggle="modal" data-bs-target="#modalRumah">Lihat Foto</a></td>
+                                <td>:
+                                    <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalRumah">Lihat Foto</button>
+                                </td>
                             </tr>
                         </table>
                     </div>
