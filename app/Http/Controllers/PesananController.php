@@ -18,7 +18,7 @@ class PesananController extends Controller
         $pesanan = Register::where('status', 'diterima')->get();
         return view('review.riwayatDiterima', compact('pesanan'));
     }
-    
+
     public function riwayatDitolak()
     {
         $pesanan = Register::where('status', 'ditolak')->get();
@@ -103,26 +103,26 @@ class PesananController extends Controller
     // Menolak pesanan dengan alasan
     public function tolakPesanan(Request $request, $id) {
         $pesanan = Register::findOrFail($id);
-        $pesanan->status = 'ditolak'; 
-        $pesanan->save(); 
+        $pesanan->status = 'ditolak';
+        $pesanan->save();
 
         $alasan = $request->input('alasan') ?? 'Tanpa alasan spesifik';
 
         // Kirim WhatsApp ke pelanggan
-        $lokasiPemasangan = ($pesanan->latitude && $pesanan->longitude) 
-        ? "https://www.google.com/maps?q={$pesanan->latitude},{$pesanan->longitude}" 
+        $lokasiPemasangan = ($pesanan->latitude && $pesanan->longitude)
+        ? "https://www.google.com/maps?q={$pesanan->latitude},{$pesanan->longitude}"
         : 'Lokasi belum tersedia';
 
         $pesan = "Halo {$pesanan->nama_cust}, setelah kami tinjau, pemesanan WiFi Anda tidak dapat kami proses dengan alasan berikut:\n\n"
         . "*{$alasan}*\n\n"
         . "Berikut detail pemesanan Anda:\n"
         . "- *Nama*: {$pesanan->nama_cust}\n"
-        . "- *Alamat*: {$pesanan->alamat_lengkap}, " 
+        . "- *Alamat*: {$pesanan->alamat_lengkap}, "
         . (optional($pesanan->kec)->nama_kec ?? '-') . ", "
         . (optional($pesanan->kab)->nama_kab ?? '-') . ", "
-        . (optional($pesanan->prov)->nama_prov ?? '-') . "\n"        
+        . (optional($pesanan->prov)->nama_prov ?? '-') . "\n"
         . "- *Email*: " . ($pesanan->email ?? '-') . "\n"
-        . "- *Paket WiFi*: " . ($pesanan->paket->nama_paket ?? '-') . "\n"        
+        . "- *Paket WiFi*: " . ($pesanan->paket->nama_paket ?? '-') . "\n"
         . "- *Lokasi Pemasangan*: {$lokasiPemasangan}\n"
         . "- *Harga Paket*: Rp " . number_format($pesanan->total_harga, 0, ',', '.') . "\n\n"
         . "Jika ada yang perlu dikonfirmasi atau ingin mengajukan ulang pemesanan, silakan hubungi kami di " . env('ADMIN_WHATSAPP') . ". Terima kasih.";
@@ -145,7 +145,7 @@ class PesananController extends Controller
         }
 
         $api_url = "https://api.ultramsg.com/{$instance_id}/messages/chat";
-        
+
         // Kirim HTTP POST request ke API UltraMsg
         $response = Http::post($api_url, [
             'token' => $token,

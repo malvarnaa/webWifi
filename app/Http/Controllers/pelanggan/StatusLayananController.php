@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class StatusLayananController extends Controller
 {
-    public function statusLayanan()
+    public function index()
     {
         // Ambil data register berdasarkan user yang sedang login
         $register = Register::where('email', Auth::user()->email)->first();

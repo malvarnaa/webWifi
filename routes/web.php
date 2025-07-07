@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\PermintaanController;
 use App\Http\Controllers\pelanggan\BantuanController;
 use App\Http\Controllers\pelanggan\PelangganController;
 use App\Http\Controllers\pelanggan\StatusLayananController;
+use App\Http\Controllers\pelanggan\TagihanDanPembayaranController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -101,7 +102,7 @@ Route::middleware(['auth', 'userAkses:admin'])->group(function () {
     Route::get('/permintaan/{id}', [PermintaanController::class, 'show'])->name('admin.permintaan.show');
     Route::post('/permintaan/{id}/status', [PermintaanController::class, 'ubahStatus'])->name('admin.permintaan.status');
 
-    Route::get('/daftar-pelanggan', [PelangganController::class, 'data_pelanggan'])->name('daftar.pelanggan');    
+    Route::get('/daftar-pelanggan', [PelangganController::class, 'data_pelanggan'])->name('daftar.pelanggan');
     Route::get('/pelanggan/aktif/{id}', [PelangganController::class, 'detail_pelanggan_aktif'])->name('pelanggan.detail');
     // Route::get('/pelanggan/export', [PelangganController::class, 'exportPelanggan'])->name('pelanggan.export');
     Route::get('/ekspor-pelanggan-aktif/pdf', [PelangganController::class, 'exportPDFPelanggan'])->name('pelanggan.ekspor.pdf');
@@ -114,12 +115,16 @@ Route::middleware(['auth', 'userAkses:pelanggan'])->group(function(){
     Route::get('/pelanggan/dashboard', [PelangganController::class, 'pelangganDashboard'])->name('pelanggan.dashboard');
 
     // status layanan
-    Route::get('/pelanggan/status_layanan', [StatusLayananController::class, 'statusLayanan'])->name('statusLayanan.index');
+    Route::get('/pelanggan/status_layanan', [StatusLayananController::class, 'index'])->name('statusLayanan.index');
 
     // bantuan layanan pelanggan
     Route::get('/pelanggan/bantuan', [BantuanController::class, 'index'])->name('bantuan.index');
     Route::post('/pelanggan/bantuan/kirim-pesan', [BantuanController::class, 'kirimPesan'])->name('bantuan.kirimPesan');
     Route::post('/pelanggan/bantuan/permintaan-service', [BantuanController::class, 'permintaanService'])->name('bantuan.permintaanService');
+
+    // tagihan dan pembayaran
+    Route::get('/pelanggan/tagihan_pembayaran', [TagihanDanPembayaranController::class, 'index'])->name('tagihanPembayaran.index');
+    Route::post('/pelanggan/tagihan_pembayaran/upload/{id}', [TagihanDanPembayaranController::class, 'uploadBukti'])->name('upload.bukti');
 });
 
 // Route::middleware(['auth', 'userAkses:calon'])->group(function(){
