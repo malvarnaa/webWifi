@@ -79,8 +79,8 @@
                   <i class="ni ni-planet text-dark text-sm opacity-10"></i>
                 </div>
                 <span class="nav-link-text ms-0">Master Paket Internet</span>
-              </a>             
-              </li> 
+              </a>
+              </li>
 
               <li class="nav-item">
                 <a class="nav-link " href="{{ route('daftar.pelanggan') }}">
@@ -91,7 +91,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link " href="#">
+                <a class="nav-link " href="{{ route('admin.konfirmasi') }}">
                   <div class="icon icon-shape icon-sm border-radius-md text-center me-1 d-flex align-items-center justify-content-center">
                     <i class="ni ni-credit-card text-dark text-sm opacity-10"></i>
                   </div>
@@ -107,7 +107,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link " href="#">
+                <a class="nav-link " href="{{ route('tagihan.belumdibayar') }}">
                   <div class="icon icon-shape icon-sm border-radius-md text-center me-1 d-flex align-items-center justify-content-center">
                     <i class="ni ni-paper-diploma text-dark text-sm opacity-10"></i>
                   </div>
@@ -127,7 +127,7 @@
             </ul>
           </div>
         </li>
-        
+
         {{-- <li class="nav-item">
           <a class="nav-link " href="../pages/billing.html">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">

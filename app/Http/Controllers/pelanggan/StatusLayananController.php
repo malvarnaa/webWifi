@@ -10,10 +10,17 @@ class StatusLayananController extends Controller
 {
     public function index()
     {
-        // Ambil data register berdasarkan user yang sedang login
         $register = Register::where('email', Auth::user()->email)->first();
-        // dd($register);
 
-        return view('user_active.status_layanan.utama', compact('register'));
+        $tagihanTerbaru = $register?->tagihan()
+            ->where('status', '!=', 'lunas')
+            ->orderBy('jatuh_tempo', 'asc')
+            ->first(); // hanya satu
+
+        return view('user_active.status_layanan.utama', [
+            'register' => $register,
+            'tagihan' => $tagihanTerbaru,
+        ]);
     }
+
 }

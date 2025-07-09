@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\KonfirmasiPembayaranController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AlamatController;
 use App\Http\Controllers\CalonPelangganController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\PaketController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\Admin\PermintaanController;
+use App\Http\Controllers\admin\TagihanBelumDibayarController;
 use App\Http\Controllers\pelanggan\BantuanController;
 use App\Http\Controllers\pelanggan\PelangganController;
 use App\Http\Controllers\pelanggan\StatusLayananController;
@@ -121,7 +123,7 @@ Route::middleware(['auth', 'userAkses:admin'])->group(function () {
 
     Route::get('/daftar-pelanggan', [PelangganController::class, 'data_pelanggan'])->name('daftar.pelanggan');
     Route::get('/pelanggan/aktif/{id}', [PelangganController::class, 'detail_pelanggan_aktif'])->name('pelanggan.detail');
-    // Route::get('/pelanggan/export', [PelangganController::class, 'exportPelanggan'])->name('pelanggan.export');
+    // Route::get('/pelanggan/export', [PelangganController::class, 'exportPelanggan'])->name('pelanggan.export'):
     Route::get('/ekspor-pelanggan-aktif/pdf', [PelangganController::class, 'exportPDFPelanggan'])->name('pelanggan.ekspor.pdf');
     Route::get('/pelanggan/pdf', [PelangganController::class, 'PdfPelanggan'])->name('pdf.pelanggan');
 
@@ -134,7 +136,12 @@ Route::middleware(['auth', 'userAkses:admin'])->group(function () {
     Route::delete('/promo/{promo}', [PromoController::class, 'destroy'])->name('promo.destroy');
     Route::get('/cari-promo', [PromoController::class, 'cari'])->name('cari.promo');
 
+    // konfirmasi pembayaran pelanggan
+    Route::get('/konfirmasi-pembayaran', [KonfirmasiPembayaranController::class, 'index'])->name('admin.konfirmasi');
+    Route::post('/konfirmasi-pembayaran/{id}', [KonfirmasiPembayaranController::class, 'konfirmasi'])->name('admin.konfirmasi.store');
 
+    // daftar tagihan para pelanggan
+    Route::get('/tagihan-belum-dibayar', [TagihanBelumDibayarController::class, 'index'])->name('tagihan.belumdibayar');
 
 });
 
