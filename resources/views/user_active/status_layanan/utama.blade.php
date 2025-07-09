@@ -65,5 +65,11 @@
         <span class="status-label">Kecepatan Internet:</span>
         <span class="status-value">{{ $register->paket->kecepatan ?? '-' }}</span>
     </div>
+
+    <div class="status-item">
+        <span class="status-label">Jatuh Tempo:</span>
+        <span class="status-value">{{ \Carbon\Carbon::parse($tagihan->jatuh_tempo)->translatedFormat('d F Y') }}
+        </span>
+    </div>
 </div>
 @endsection

@@ -30,9 +30,8 @@ class Register extends Model
         'latitude',
         'longitude',
         'status',
-        'tanggal_diterima',
-        'jatuh_tempo',
         'status_kepelangganan',
+        'tanggal_aktif',
     ];
 
     public function prov()
@@ -54,7 +53,6 @@ class Register extends Model
         return $this->belongsTo(Desa::class, 'desa_id');
     }
 
-
     public function paket()
     {
         return $this->belongsTo(Paket::class, 'paket_id', 'id');
@@ -64,4 +62,10 @@ class Register extends Model
     {
         return $this->hasOne(User::class, 'email', 'email');
     }
+
+    public function tagihan()
+{
+    return $this->hasMany(TagihanBulanan::class);
+}
+
 }

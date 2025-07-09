@@ -74,7 +74,7 @@
          </li>
 
          <li class="nav-item">
-             <a class="nav-link" href="../pages/billing.html">
+             <a class="nav-link" href="{{ route('tagihanPembayaran.index') }}">
                  <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                      <i class="ni ni-credit-card text-dark text-sm opacity-10"></i>
                  </div>
@@ -481,6 +481,7 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="{{ asset('tmp/assets/js/argon-dashboard.min.js?v=2.1.0') }}"></script>
+
 </body>
 
 </html>
