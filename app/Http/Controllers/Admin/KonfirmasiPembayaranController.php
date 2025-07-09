@@ -21,49 +21,60 @@ class KonfirmasiPembayaranController extends Controller
         return view('admin.konfirmasi_pembayaran.utama', compact('data'));
     }
 
-
     public function konfirmasi($id)
     {
         $tagihan = TagihanBulanan::findOrFail($id);
         $register = $tagihan->register;
 
-        // Update tagihan ini menjadi lunas
+        // Update status tagihan ini menjadi lunas
         $tagihan->update([
             'status' => 'lunas',
         ]);
 
-        // Pastikan pelanggan tetap aktif
+        // Aktifkan kembali pelanggan jika sebelumnya tidak aktif
         if ($register->status_kepelangganan !== 'aktif') {
             $register->update([
                 'status_kepelangganan' => 'aktif',
             ]);
         }
 
-        // Hitung bulan dan jatuh tempo baru
-        $jatuhTempoLama = Carbon::parse($tagihan->jatuh_tempo);
-        $bulanSelanjutnya = $jatuhTempoLama->copy()->addMonth();
+        // Ambil tanggal jatuh tempo awal (misalnya 5 atau 20)
+        $tanggalAwal = Carbon::parse($tagihan->jatuh_tempo)->day;
 
-        $jatuhTempoBaru = $jatuhTempoLama->day <= 5
-            ? $bulanSelanjutnya->copy()->day(5)
-            : $bulanSelanjutnya->copy()->day(20);
+        // Ambil bulan dari field "bulan" untuk menentukan tagihan bulan berikutnya
+        $bulanLama = Carbon::createFromFormat('F Y', $tagihan->bulan);
+        $bulanBerikutnya = $bulanLama->copy()->addMonth(); // misalnya: August 2025
 
-        // Cek apakah tagihan bulan depan sudah ada
+        // Jatuh tempo selalu satu bulan setelah bulan tagihan
+        $jatuhTempoBulan = $bulanBerikutnya->copy()->addMonth(); // misalnya: September 2025
+
+        // Buat tanggal jatuh tempo (5 atau 20 di bulan jatuh tempo)
+        $jatuhTempoBaru = $jatuhTempoBulan->copy()->startOfMonth()->addDays($tanggalAwal - 1);
+
+        // Cegah overflow tanggal (misal 31 Februari)
+        if ($jatuhTempoBaru->month !== $jatuhTempoBulan->month) {
+            $jatuhTempoBaru = $jatuhTempoBulan->copy()->endOfMonth();
+        }
+
+        // Cek apakah tagihan untuk bulan berikutnya sudah ada
         $sudahAda = TagihanBulanan::where('register_id', $register->id)
-            ->where('bulan', $bulanSelanjutnya->translatedFormat('F Y'))
+            ->where('bulan', $bulanBerikutnya->translatedFormat('F Y'))
             ->exists();
 
+        // Buat tagihan baru jika belum ada
         if (!$sudahAda) {
             TagihanBulanan::create([
                 'register_id' => $register->id,
-                'bulan' => $bulanSelanjutnya->translatedFormat('F Y'),
+                'bulan' => $bulanBerikutnya->translatedFormat('F Y'), // contoh: August 2025
                 'jumlah' => $register->total_harga,
                 'status' => 'belum_lunas',
-                'jatuh_tempo' => $jatuhTempoBaru,
+                'jatuh_tempo' => $jatuhTempoBaru->toDateString(), // contoh: 2025-09-05
             ]);
         }
 
-
         return redirect()->back()->with('success', 'Pembayaran berhasil dikonfirmasi dan tagihan bulan berikutnya telah dibuat.');
     }
+
+
 
 }
