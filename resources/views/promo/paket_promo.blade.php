@@ -43,6 +43,7 @@
 
     table.table {
         min-width: 800px;
+        font-size: 14px;
     }
 
     /* Tambahan: berikan ruang bawah supaya dropdown tidak mentok */
@@ -50,6 +51,8 @@
         padding-bottom: 80px;
     }
 </style>
+
+
 
 
 
@@ -109,8 +112,7 @@
                         @endif
 
                         <div class="table-responsive">
-                            <table class="table table-hover" style="text-align: center;">
-                                <thead>
+                            <table class="table table-hover w-100" style="min-width: 900px; text-align: center;">                                <thead>
                                     <tr>
                                         <th>#</th>
                                         <th>Nama Promo</th>

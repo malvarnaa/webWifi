@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('promo', function (Blueprint $table) {
             $table->id();
             $table->string('nama_promo');
-            $table->string('kode_promo')->unique();
             $table->text('deskripsi');
             $table->enum('jenis_promo', ['diskon', 'gratis_bulan', 'cashback'])->default('diskon');
             $table->decimal('diskon', 8, 2)->nullable();

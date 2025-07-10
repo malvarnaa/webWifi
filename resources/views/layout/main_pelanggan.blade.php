@@ -123,7 +123,7 @@
          </li>
 
          <li class="nav-item">
-             <a class="nav-link" href="../pages/profile.html">
+             <a class="nav-link" href="{{route('profil.pelanggan')}}">
                  <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                      <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
                  </div>
@@ -132,7 +132,7 @@
          </li>
 
          <li class="nav-item">
-             <a class="nav-link" href="../pages/sign-in.html">
+             <a class="nav-link" href="{{route('keamanan.akun')}}">
                  <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                      <i class="ni ni-single-copy-04 text-dark text-sm opacity-10"></i>
                  </div>
@@ -179,7 +179,7 @@
                     <li class="nav-item d-flex align-items-center">
                         <h6 class="text-white font-weight-bold px-0">
                             <i class="bi bi-person me-sm-1"></i>
-                            {{ auth()->user()->name }}
+                            {{ auth()->user()->register->nama_cust }}
                         </h6>
                     </li>
                     <li class="nav-item d-xl-none ps-3 d-flex align-items-center">

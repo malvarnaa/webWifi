@@ -146,9 +146,9 @@ Route::middleware(['auth', 'userAkses:admin'])->group(function () {
 });
 
 
-Route::middleware(['auth', 'userAkses:pelanggan'])->group(function(){
+Route::middleware(['auth', 'userAkses:pelanggan',])->group(function() {
     Route::get('/pelanggan/dashboard', [PelangganController::class, 'pelangganDashboard'])->name('pelanggan.dashboard');
-
+    
     // status layanan
     Route::get('/pelanggan/status_layanan', [StatusLayananController::class, 'index'])->name('statusLayanan.index');
 
@@ -160,6 +160,22 @@ Route::middleware(['auth', 'userAkses:pelanggan'])->group(function(){
     // tagihan dan pembayaran
     Route::get('/pelanggan/tagihan_pembayaran', [TagihanDanPembayaranController::class, 'index'])->name('tagihanPembayaran.index');
     Route::post('/pelanggan/tagihan_pembayaran/upload/{id}', [TagihanDanPembayaranController::class, 'uploadBukti'])->name('upload.bukti');
+
+    //profil pelanggan
+    Route::get('profil/pelanggan',[PelangganController::class,'profil'])->name('profil.pelanggan');
+    Route::get('profil/pelanggan/edit/{id}',[PelangganController::class,'editProfil'])->name('profil.edit');
+    Route::post('profil/pelanggan/{id}',[PelangganController::class,'updateProfil'])->name('profil.update');
+    Route::get('/riwayat-login', [PelangganController::class, 'riwayatLogin'])->middleware('session.active')->name('pelanggan.riwayat.login');  
+    
+    //keamanan akun
+    Route::get('/keamanan-akun', [PelangganController::class, 'keamananAkun'])->name('keamanan.akun');
+    Route::post('/pelanggan/logout-device/{id}', [PelangganController::class, 'logoutDevice'])->name('pelanggan.logout_device');
+    Route::get('/pelanggan/ubah-password', [PelangganController::class, 'editPassword'])->name('pelanggan.edit_password');
+    Route::post('/pelanggan/ubah-password', [PelangganController::class, 'updatePassword'])->name('pelanggan.update_password');
+
+    
+
+
 });
 
 // Route::middleware(['auth', 'userAkses:calon'])->group(function(){

@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('promo', function (Blueprint $table) {
-            $table->dropColumn('kode_promo');
+        Schema::table('login_logs', function (Blueprint $table) {
+            $table->string('session_id')->nullable()->after('user_agent');
         });
         
     }
@@ -22,8 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('promo', function (Blueprint $table) {
-            //
+        Schema::table('login_logs', function (Blueprint $table) {
+            $table->dropColumn('session_id');
         });
     }
+    
 };
